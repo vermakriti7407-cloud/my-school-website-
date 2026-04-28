@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Anglo Sanskrit Sr. Sec. School, Pundri"
+version = "1.0.0"
+id = "artifacts/school-site"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25111
+
+[services.development]
+run = "pnpm --filter @workspace/school-site run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/school-site", "run", "build" ]
+publicDir = "artifacts/school-site/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25111"
+BASE_PATH = "/"

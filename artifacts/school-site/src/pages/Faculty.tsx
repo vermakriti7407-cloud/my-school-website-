@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
 
 const departments = [
   {
@@ -64,58 +65,110 @@ export default function Faculty() {
     return name.replace(/^(Mr\.|Mrs\.|Ms\.|Dr\.)\s*/, '').split(' ').map(n => n[0]).join('').substring(0, 2);
   };
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
   return (
     <Layout>
       {/* Header */}
-      <div className="bg-primary text-primary-foreground py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 mandala-bg pointer-events-none"></div>
+      <div className="bg-primary text-primary-foreground pt-32 pb-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-luminosity"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-transparent"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[100px]"></div>
+        
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">Our Faculty</h1>
-          <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto">
-            Experienced educators dedicated to nurturing the next generation.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-secondary font-bold tracking-[0.2em] uppercase text-sm mb-6 block">Elite Educators</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white drop-shadow-lg">Our Faculty</h1>
+            <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light leading-relaxed">
+              Distinguished mentors dedicated to nurturing the next generation of global leaders.
+            </p>
+          </motion.div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 max-w-6xl space-y-16">
-        
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            The strength of Anglo Sanskrit School lies in its highly qualified, experienced, and dedicated teaching staff. Our educators are not just subject matter experts, but mentors who guide students through their academic and personal journey.
-          </p>
+      <div className="aurora-bg relative py-24">
+        <div className="container mx-auto px-4 max-w-7xl space-y-24">
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center max-w-4xl mx-auto space-y-6"
+          >
+            <p className="text-xl text-muted-foreground leading-relaxed font-light">
+              The supreme strength of Anglo Sanskrit School lies in its highly qualified, internationally experienced, and intensely dedicated teaching faculty. Our educators are not merely subject matter experts; they are visionaries who guide students through their academic and personal journeys.
+            </p>
+          </motion.div>
+
+          {departments.map((dept, i) => (
+            <motion.section 
+              key={i} 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={staggerContainer}
+              className="space-y-10"
+            >
+              <motion.div variants={fadeUp} className="flex items-center gap-4">
+                <h2 className="text-3xl font-serif font-bold text-primary">
+                  {dept.name}
+                </h2>
+                <div className="h-[2px] flex-1 bg-border/50 hidden md:block"></div>
+              </motion.div>
+              
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                {dept.staff.map((teacher, j) => (
+                  <motion.div key={j} variants={fadeUp}>
+                    <Card className="glass-card border-white/60 h-full overflow-hidden group rounded-[2rem]">
+                      <div className="h-3 bg-gradient-to-r from-secondary to-yellow-400 group-hover:h-4 transition-all duration-300"></div>
+                      <CardContent className="p-8 text-center space-y-6">
+                        <div className="relative w-28 h-28 mx-auto">
+                          <div className="absolute inset-0 bg-secondary/20 rounded-full blur-xl group-hover:bg-secondary/40 transition-colors"></div>
+                          <Avatar className="w-28 h-28 border-4 border-white shadow-xl relative z-10">
+                            <AvatarImage src={`https://i.pravatar.cc/150?u=${teacher.name}`} alt={teacher.name} />
+                            <AvatarFallback className="bg-primary text-primary-foreground font-display font-bold text-3xl">
+                              {getInitials(teacher.name)}
+                            </AvatarFallback>
+                          </Avatar>
+                        </div>
+                        <div>
+                          <h3 className="font-serif font-bold text-xl text-foreground mb-1">{teacher.name}</h3>
+                          <p className="text-sm font-bold text-accent uppercase tracking-wider mb-4">{teacher.role}</p>
+                          <div className="pt-4 border-t border-border/50 text-sm text-muted-foreground space-y-2 font-light">
+                            <p className="flex justify-between">
+                              <span className="font-semibold text-foreground/70">Qualifications</span> 
+                              <span className="text-right truncate ml-2">{teacher.qual}</span>
+                            </p>
+                            <p className="flex justify-between">
+                              <span className="font-semibold text-foreground/70">Experience</span> 
+                              <span>{teacher.exp}</span>
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          ))}
+
         </div>
-
-        {departments.map((dept, i) => (
-          <section key={i} className="space-y-8">
-            <h2 className="text-2xl font-serif font-bold text-foreground border-b-2 border-secondary/30 pb-2 inline-block">
-              {dept.name}
-            </h2>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {dept.staff.map((teacher, j) => (
-                <Card key={j} className="border-border hover:border-primary/30 transition-colors shadow-sm hover:shadow-md overflow-hidden group">
-                  <div className="h-2 bg-secondary group-hover:bg-primary transition-colors"></div>
-                  <CardContent className="p-6 text-center space-y-4">
-                    <Avatar className="w-20 h-20 mx-auto border-2 border-muted">
-                      <AvatarImage src={`https://i.pravatar.cc/150?u=${teacher.name}`} alt={teacher.name} />
-                      <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">
-                        {getInitials(teacher.name)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="font-bold text-foreground">{teacher.name}</h3>
-                      <p className="text-sm font-medium text-primary my-1">{teacher.role}</p>
-                      <div className="mt-3 pt-3 border-t border-border/50 text-xs text-muted-foreground space-y-1">
-                        <p><span className="font-semibold text-foreground/70">Qual:</span> {teacher.qual}</p>
-                        <p><span className="font-semibold text-foreground/70">Exp:</span> {teacher.exp}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-        ))}
-
       </div>
     </Layout>
   );

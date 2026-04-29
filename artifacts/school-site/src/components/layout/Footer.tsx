@@ -1,41 +1,62 @@
 import { Link } from "wouter";
-import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground pt-16 pb-8 border-t-[8px] border-secondary relative overflow-hidden">
-      {/* Decorative mandala bg */}
-      <div className="absolute inset-0 opacity-5 mandala-bg pointer-events-none"></div>
+    <footer className="bg-[hsl(220_60%_10%)] text-primary-foreground pt-20 pb-8 relative overflow-hidden">
+      {/* Decorative aurora background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/20 via-transparent to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 opacity-5 mandala-bg text-white pointer-events-none"></div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        
+        {/* Newsletter Signup Banner */}
+        <div className="glass-dark rounded-3xl p-8 md:p-12 mb-16 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
+          <div className="max-w-xl relative z-10 text-center md:text-left">
+            <h3 className="font-serif text-3xl font-bold text-white mb-2">Join the AS Community</h3>
+            <p className="text-white/70">Subscribe to our newsletter for updates on admissions, events, and academic achievements.</p>
+          </div>
+          <div className="w-full md:w-auto flex-1 max-w-md relative z-10 flex gap-2">
+            <Input 
+              type="email" 
+              placeholder="Your email address" 
+              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-14 rounded-xl focus-visible:ring-secondary"
+            />
+            <Button className="h-14 px-6 rounded-xl bg-gradient-to-r from-secondary to-yellow-400 text-secondary-foreground hover:opacity-90 font-semibold shadow-[0_0_20px_rgba(244,185,66,0.3)] border-none">
+              Subscribe <Send className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 mb-16">
           
           {/* Brand Col */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-background rounded-full flex items-center justify-center text-primary font-serif font-bold text-xl border-2 border-secondary shadow-md">
+          <div className="lg:col-span-4 space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center text-white font-display font-bold text-2xl border border-white/20 shadow-lg">
                 AS
               </div>
               <div className="flex flex-col">
-                <span className="font-serif font-bold text-xl text-primary-foreground leading-tight">Anglo Sanskrit</span>
-                <span className="text-xs font-medium text-secondary uppercase tracking-wider">Sr. Sec. School</span>
+                <span className="font-serif font-bold text-2xl text-white leading-tight">Anglo Sanskrit</span>
+                <span className="text-xs font-semibold text-secondary uppercase tracking-[0.2em]">Sr. Sec. School</span>
               </div>
             </div>
-            <p className="text-primary-foreground/80 text-sm leading-relaxed">
-              A trusted heritage institution in Pundri offering a blend of traditional Vedic values and modern English-medium education since its inception.
+            <p className="text-white/70 text-sm leading-relaxed max-w-sm">
+              A premium heritage institution in Pundri, offering a harmonious blend of profound Vedic values and progressive global education since its inception.
             </p>
-            <div className="space-y-2">
+            <div className="space-y-1 bg-white/5 border border-white/10 p-4 rounded-xl inline-block">
               <p className="font-devanagari text-secondary text-xl font-medium">विद्या ददाति विनयं</p>
-              <p className="text-xs text-primary-foreground/70 italic">"Knowledge imparts humility"</p>
+              <p className="text-xs text-white/70 italic tracking-wider">"Knowledge imparts humility"</p>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h3 className="font-serif text-lg font-semibold mb-6 text-secondary flex items-center">
-              <span className="w-6 h-[2px] bg-secondary mr-3"></span>
-              Quick Links
+          <div className="lg:col-span-2">
+            <h3 className="font-display text-lg font-bold mb-6 text-white tracking-wide">
+              Explore
             </h3>
             <ul className="space-y-3">
               {[
@@ -46,8 +67,7 @@ export function Footer() {
                 { name: "Photo Gallery", path: "/gallery" },
               ].map((link) => (
                 <li key={link.path}>
-                  <Link href={link.path} className="text-sm text-primary-foreground/80 hover:text-secondary transition-colors flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary/50"></span>
+                  <Link href={link.path} className="text-sm text-white/60 hover:text-secondary hover:translate-x-1 transition-all inline-block">
                     {link.name}
                   </Link>
                 </li>
@@ -56,9 +76,8 @@ export function Footer() {
           </div>
 
           {/* Information */}
-          <div>
-            <h3 className="font-serif text-lg font-semibold mb-6 text-secondary flex items-center">
-              <span className="w-6 h-[2px] bg-secondary mr-3"></span>
+          <div className="lg:col-span-3">
+            <h3 className="font-display text-lg font-bold mb-6 text-white tracking-wide">
               Information
             </h3>
             <ul className="space-y-3">
@@ -68,61 +87,62 @@ export function Footer() {
                 { name: "Contact Us", path: "/contact" },
               ].map((link) => (
                 <li key={link.path}>
-                  <Link href={link.path} className="text-sm text-primary-foreground/80 hover:text-secondary transition-colors flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary/50"></span>
+                  <Link href={link.path} className="text-sm text-white/60 hover:text-secondary hover:translate-x-1 transition-all inline-block">
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="mt-6 p-4 bg-black/10 rounded-lg border border-white/10">
-              <p className="text-sm font-medium text-primary-foreground">Affiliated to BSEH, Bhiwani</p>
-              <p className="text-xs text-primary-foreground/70 mt-1">School Code: 12345</p>
+            <div className="mt-8 p-4 bg-accent/10 rounded-xl border border-accent/20">
+              <p className="text-sm font-semibold text-white">Affiliated to BSEH, Bhiwani</p>
+              <p className="text-xs text-white/60 mt-1">School Code: 12345</p>
             </div>
           </div>
 
           {/* Contact */}
-          <div>
-            <h3 className="font-serif text-lg font-semibold mb-6 text-secondary flex items-center">
-              <span className="w-6 h-[2px] bg-secondary mr-3"></span>
+          <div className="lg:col-span-3">
+            <h3 className="font-display text-lg font-bold mb-6 text-white tracking-wide">
               Contact Us
             </h3>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-sm text-primary-foreground/80">
+              <li className="flex items-start gap-3 text-sm text-white/70">
                 <MapPin className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
                 <span>Anglo Sanskrit Sr. Sec. School,<br/>Pundri, District Kaithal,<br/>Haryana - 136026</span>
               </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/80">
+              <li className="flex items-center gap-3 text-sm text-white/70">
                 <Phone className="w-5 h-5 text-secondary shrink-0" />
                 <span>+91-9876543210</span>
               </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/80">
+              <li className="flex items-center gap-3 text-sm text-white/70">
                 <Mail className="w-5 h-5 text-secondary shrink-0" />
                 <span>info@anglosanskritschool.com</span>
               </li>
             </ul>
             
-            <div className="flex items-center gap-3 mt-6">
-              <Button variant="ghost" size="icon" className="rounded-full bg-white/5 hover:bg-secondary hover:text-primary text-primary-foreground h-10 w-10">
-                <Facebook className="w-5 h-5" />
+            <div className="flex items-center gap-3 mt-8">
+              <Button variant="ghost" size="icon" className="rounded-full bg-white/5 border border-white/10 hover:bg-secondary hover:text-secondary-foreground hover:scale-110 transition-all text-white h-10 w-10">
+                <Facebook className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full bg-white/5 hover:bg-secondary hover:text-primary text-primary-foreground h-10 w-10">
-                <Instagram className="w-5 h-5" />
+              <Button variant="ghost" size="icon" className="rounded-full bg-white/5 border border-white/10 hover:bg-secondary hover:text-secondary-foreground hover:scale-110 transition-all text-white h-10 w-10">
+                <Instagram className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full bg-white/5 hover:bg-secondary hover:text-primary text-primary-foreground h-10 w-10">
-                <Youtube className="w-5 h-5" />
+              <Button variant="ghost" size="icon" className="rounded-full bg-white/5 border border-white/10 hover:bg-secondary hover:text-secondary-foreground hover:scale-110 transition-all text-white h-10 w-10">
+                <Youtube className="w-4 h-4" />
               </Button>
             </div>
           </div>
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-primary-foreground/60 text-center md:text-left">
+          <p className="text-sm text-white/50 text-center md:text-left">
             &copy; {new Date().getFullYear()} Anglo Sanskrit Senior Secondary School, Pundri. All rights reserved.
           </p>
-          <p className="text-xs text-primary-foreground/40">
-            Designed with reverence for heritage.
-          </p>
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <p className="text-xs font-medium text-white/50 tracking-widest uppercase">
+              Designed for Excellence
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "xlpuwNg7HAXKwT5PheU0l"
+uri = "file://artifacts/school-site/public/hero-bg.png"
+type = "image"
+title = "Modern international school campus"

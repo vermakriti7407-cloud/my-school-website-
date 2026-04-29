@@ -1,9 +1,10 @@
 import { Link, useLocation } from "wouter";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, Phone, Mail, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
   { name: "Home", path: "/" },
@@ -19,87 +20,137 @@ const NAV_LINKS = [
 export function Navbar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const isHome = location === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navClass = isHome && !scrolled
+    ? "bg-transparent border-transparent"
+    : "glass border-b shadow-sm";
+    
+  const textClass = isHome && !scrolled ? "text-white" : "text-primary";
+  const mutedTextClass = isHome && !scrolled ? "text-white/80" : "text-muted-foreground";
 
   return (
     <>
-      <div className="bg-primary text-primary-foreground py-2 px-4 text-xs md:text-sm font-medium flex justify-between items-center z-50 relative">
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> +91-9876543210</span>
-          <span className="hidden md:flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> info@anglosanskritschool.com</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="hidden md:inline font-devanagari text-primary-foreground/90">तमसो मा ज्योतिर्गमय</span>
-          <span>Affiliated to BSEH, Bhiwani</span>
-        </div>
-      </div>
+      <AnimatePresence>
+        {(!scrolled || !isHome) && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="bg-primary text-primary-foreground py-2 px-4 text-xs md:text-sm font-medium flex justify-between items-center z-50 relative overflow-hidden"
+          >
+            <div className="container mx-auto flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-secondary" /> +91-9876543210</span>
+                <span className="hidden md:flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-secondary" /> info@anglosanskritschool.com</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="hidden md:inline font-devanagari text-secondary">तमसो मा ज्योतिर्गमय</span>
+                <span className="opacity-90 border-l border-white/20 pl-4">Affiliated to BSEH, Bhiwani</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
-      <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-sm">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-serif font-bold text-xl border-2 border-secondary shadow-md">
+      <header className={`fixed w-full z-40 transition-all duration-500 ${isHome && !scrolled ? 'top-0 mt-8 md:mt-10' : 'top-0'} ${navClass}`}>
+        <div className="container mx-auto px-4 h-20 md:h-24 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center font-display font-bold text-xl md:text-2xl border transition-all duration-500 group-hover:scale-105 shadow-lg ${isHome && !scrolled ? 'bg-white/10 text-white border-white/30 backdrop-blur-md' : 'bg-primary text-white border-primary/20'}`}>
               AS
             </div>
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-lg md:text-xl text-primary leading-tight">Anglo Sanskrit</span>
-              <span className="text-xs md:text-sm font-medium text-muted-foreground uppercase tracking-wider">Sr. Sec. School, Pundri</span>
+              <span className={`font-serif font-bold text-xl md:text-2xl leading-tight transition-colors ${textClass}`}>Anglo Sanskrit</span>
+              <span className={`text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-colors ${mutedTextClass}`}>Sr. Sec. School</span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
-              <Link key={link.path} href={link.path}>
-                <Button 
-                  variant={location === link.path ? "secondary" : "ghost"} 
-                  className={`font-medium ${location === link.path ? 'bg-secondary/10 text-primary' : 'text-foreground hover:text-primary hover:bg-secondary/5'}`}
-                >
-                  {link.name}
-                </Button>
-              </Link>
-            ))}
+          <nav className="hidden lg:flex items-center gap-1 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20">
+            {NAV_LINKS.map((link) => {
+              const isActive = location === link.path;
+              return (
+                <Link key={link.path} href={link.path}>
+                  <Button 
+                    variant="ghost" 
+                    className={`font-medium rounded-full transition-all duration-300 px-5 ${
+                      isActive 
+                        ? (isHome && !scrolled ? 'bg-white/20 text-white' : 'bg-primary text-white hover:bg-primary hover:text-white')
+                        : (isHome && !scrolled ? 'text-white hover:bg-white/10' : 'text-foreground hover:bg-black/5')
+                    }`}
+                  >
+                    {link.name}
+                  </Button>
+                </Link>
+              );
+            })}
           </nav>
+
+          <div className="hidden lg:block">
+            <Link href="/admissions">
+              <Button className={`rounded-full px-6 font-semibold transition-all duration-300 ${isHome && !scrolled ? 'bg-white text-primary hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-[0_0_20px_rgba(244,185,66,0.3)]'}`}>
+                Admissions
+              </Button>
+            </Link>
+          </div>
 
           {/* Mobile Nav */}
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-primary">
+                <Button variant="ghost" size="icon" className={`${textClass} hover:bg-white/10`}>
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l-primary bg-background">
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l-primary/20 glass bg-white/95">
                 <VisuallyHidden.Root>
                   <SheetTitle>Menu</SheetTitle>
                   <SheetDescription>Navigation</SheetDescription>
                 </VisuallyHidden.Root>
                 <div className="flex flex-col gap-6 py-6 h-full">
-                  <div className="flex items-center gap-3 border-b pb-4">
-                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-serif font-bold text-lg border-2 border-secondary">
+                  <div className="flex items-center gap-3 border-b border-primary/10 pb-6">
+                    <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-primary-foreground font-display font-bold text-xl shadow-md">
                       AS
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-serif font-bold text-primary leading-tight">Anglo Sanskrit</span>
-                      <span className="text-xs font-medium text-muted-foreground uppercase">Sr. Sec. School</span>
+                      <span className="font-serif font-bold text-xl text-primary leading-tight">Anglo Sanskrit</span>
+                      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Sr. Sec. School</span>
                     </div>
                   </div>
-                  <nav className="flex flex-col gap-2 flex-1">
-                    {NAV_LINKS.map((link) => (
-                      <Link key={link.path} href={link.path} onClick={() => setIsOpen(false)}>
-                        <span className={`block px-4 py-3 rounded-md text-base font-medium transition-colors ${
-                          location === link.path 
-                            ? 'bg-primary/10 text-primary border-l-4 border-primary' 
-                            : 'text-foreground hover:bg-secondary/10 hover:text-primary border-l-4 border-transparent'
-                        }`}>
-                          {link.name}
-                        </span>
-                      </Link>
-                    ))}
+                  <nav className="flex flex-col gap-1 flex-1">
+                    {NAV_LINKS.map((link) => {
+                      const isActive = location === link.path;
+                      return (
+                        <Link key={link.path} href={link.path} onClick={() => setIsOpen(false)}>
+                          <span className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-semibold transition-all ${
+                            isActive 
+                              ? 'bg-primary text-white shadow-md' 
+                              : 'text-foreground hover:bg-primary/5 hover:text-primary'
+                          }`}>
+                            {link.name}
+                            {isActive && <ChevronRight className="w-4 h-4" />}
+                          </span>
+                        </Link>
+                      );
+                    })}
+                    <div className="mt-4 pt-4 border-t border-primary/10">
+                       <Link href="/admissions" onClick={() => setIsOpen(false)}>
+                          <Button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl h-12 text-base font-bold shadow-md">
+                            Apply Now
+                          </Button>
+                        </Link>
+                    </div>
                   </nav>
-                  <div className="mt-auto border-t pt-4 text-center">
-                    <p className="font-devanagari text-primary text-lg mb-2">विद्या ददाति विनयं</p>
-                    <p className="text-sm text-muted-foreground">Knowledge imparts humility</p>
-                  </div>
                 </div>
               </SheetContent>
             </Sheet>

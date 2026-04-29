@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
-import { MonitorPlay, FlaskConical, BookOpen, Trophy, Bus, Stethoscope, MicVocal, Palette } from "lucide-react";
+import { MonitorPlay, FlaskConical, BookOpen, Trophy, Bus, Stethoscope, MicVocal } from "lucide-react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { SectionHeader } from "@/components/layout/SectionHeader";
+import { SectionDivider } from "@/components/layout/SectionDivider";
 
 const facilitiesList = [
   {
@@ -98,7 +100,7 @@ function FacilityCard({ facility, index }: { facility: any, index: number }) {
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="glass-card rounded-[2rem] overflow-hidden h-full flex flex-col group relative transition-shadow duration-300 hover:shadow-[0_0_30px_rgba(244,185,66,0.2)] border border-white/60"
+        className="bg-white rounded-2xl overflow-hidden h-full flex flex-col group relative transition-all duration-300 shadow-lg hover:shadow-2xl border border-border/40 hover:-translate-y-1"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent z-10 pointer-events-none rounded-[2rem]"></div>
         
@@ -113,13 +115,13 @@ function FacilityCard({ facility, index }: { facility: any, index: number }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220_60%_12%)]/90 via-transparent to-transparent"></div>
           
-          <div className="absolute bottom-6 left-6 w-14 h-14 bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-secondary group-hover:text-secondary-foreground transition-colors duration-300">
+          <div className="absolute bottom-6 left-6 w-14 h-14 bg-white backdrop-blur-md border border-border/40 text-primary rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-secondary group-hover:text-secondary-foreground group-hover:border-secondary/20 transition-colors duration-300">
             <facility.icon className="w-6 h-6" />
           </div>
         </div>
         
         <div 
-          className="p-8 flex-1 flex flex-col relative z-20 bg-white/50 backdrop-blur-md"
+          className="p-8 flex-1 flex flex-col relative z-20 bg-white"
           style={{ transform: "translateZ(40px)" }}
         >
           <h3 className="text-2xl font-serif font-bold text-primary mb-4">{facility.title}</h3>
@@ -160,13 +162,23 @@ export default function Facilities() {
         </div>
       </div>
 
-      <div className="aurora-bg relative py-24">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="bg-[#fdfbf7] relative py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+          
+          <SectionHeader 
+            eyebrow="Our Amenities"
+            title="Premium Learning Environment"
+            icon={<MonitorPlay className="w-5 h-5 text-secondary" />}
+          />
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {facilitiesList.map((facility, index) => (
               <FacilityCard key={index} facility={facility} index={index} />
             ))}
           </div>
+
+          <SectionDivider />
+
         </div>
       </div>
     </Layout>

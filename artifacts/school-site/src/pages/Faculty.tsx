@@ -3,6 +3,9 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
+import { SectionHeader } from "@/components/layout/SectionHeader";
+import { SectionDivider } from "@/components/layout/SectionDivider";
+import { Users } from "lucide-react";
 
 const departments = [
   {
@@ -101,8 +104,8 @@ export default function Faculty() {
         </div>
       </div>
 
-      <div className="aurora-bg relative py-24">
-        <div className="container mx-auto px-4 max-w-7xl space-y-24">
+      <div className="bg-background relative py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl space-y-20 md:space-y-28">
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -110,10 +113,17 @@ export default function Faculty() {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto space-y-6"
           >
-            <p className="text-xl text-muted-foreground leading-relaxed font-light">
+            <SectionHeader 
+              eyebrow="Teaching Excellence"
+              title="Guiding the Future"
+              icon={<Users className="w-5 h-5 text-secondary" />}
+            />
+            <p className="text-lg text-muted-foreground leading-relaxed font-light">
               The supreme strength of Anglo Sanskrit School lies in its highly qualified, internationally experienced, and intensely dedicated teaching faculty. Our educators are not merely subject matter experts; they are visionaries who guide students through their academic and personal journeys.
             </p>
           </motion.div>
+
+          <SectionDivider />
 
           {departments.map((dept, i) => (
             <motion.section 
@@ -133,31 +143,31 @@ export default function Faculty() {
               
               <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {dept.staff.map((teacher, j) => (
-                  <motion.div key={j} variants={fadeUp}>
-                    <Card className="glass-card border-white/60 h-full overflow-hidden group rounded-[2rem]">
-                      <div className="h-3 bg-gradient-to-r from-secondary to-yellow-400 group-hover:h-4 transition-all duration-300"></div>
-                      <CardContent className="p-8 text-center space-y-6">
-                        <div className="relative w-28 h-28 mx-auto">
-                          <div className="absolute inset-0 bg-secondary/20 rounded-full blur-xl group-hover:bg-secondary/40 transition-colors"></div>
-                          <Avatar className="w-28 h-28 border-4 border-white shadow-xl relative z-10">
+                  <motion.div key={j} variants={fadeUp} className="h-full">
+                    <Card className="bg-white border border-border/40 h-full overflow-hidden group rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                      <div className="h-2 bg-gradient-to-r from-secondary to-yellow-400 group-hover:h-3 transition-all duration-300"></div>
+                      <CardContent className="p-8 text-center flex flex-col h-[calc(100%-0.5rem)]">
+                        <div className="relative w-24 h-24 mx-auto mb-6">
+                          <div className="absolute inset-0 bg-secondary/10 rounded-full blur-xl group-hover:bg-secondary/30 transition-colors"></div>
+                          <Avatar className="w-24 h-24 border-4 border-white shadow-md relative z-10">
                             <AvatarImage src={`https://i.pravatar.cc/150?u=${teacher.name}`} alt={teacher.name} />
-                            <AvatarFallback className="bg-primary text-primary-foreground font-display font-bold text-3xl">
+                            <AvatarFallback className="bg-primary/5 text-primary font-display font-bold text-2xl border border-primary/10">
                               {getInitials(teacher.name)}
                             </AvatarFallback>
                           </Avatar>
                         </div>
-                        <div>
-                          <h3 className="font-serif font-bold text-xl text-foreground mb-1">{teacher.name}</h3>
-                          <p className="text-sm font-bold text-accent uppercase tracking-wider mb-4">{teacher.role}</p>
-                          <div className="pt-4 border-t border-border/50 text-sm text-muted-foreground space-y-2 font-light">
-                            <p className="flex justify-between">
-                              <span className="font-semibold text-foreground/70">Qualifications</span> 
-                              <span className="text-right truncate ml-2">{teacher.qual}</span>
-                            </p>
-                            <p className="flex justify-between">
-                              <span className="font-semibold text-foreground/70">Experience</span> 
-                              <span>{teacher.exp}</span>
-                            </p>
+                        <div className="flex-1 flex flex-col">
+                          <h3 className="font-serif font-bold text-xl text-primary mb-1">{teacher.name}</h3>
+                          <p className="text-xs font-bold text-secondary uppercase tracking-wider mb-6">{teacher.role}</p>
+                          <div className="pt-4 border-t border-border/50 text-sm text-muted-foreground space-y-3 font-light mt-auto">
+                            <div className="flex flex-col text-left">
+                              <span className="font-semibold text-foreground/70 text-xs uppercase tracking-wider mb-1">Qualifications</span> 
+                              <span className="text-sm">{teacher.qual}</span>
+                            </div>
+                            <div className="flex flex-col text-left">
+                              <span className="font-semibold text-foreground/70 text-xs uppercase tracking-wider mb-1">Experience</span> 
+                              <span className="text-sm">{teacher.exp}</span>
+                            </div>
                           </div>
                         </div>
                       </CardContent>

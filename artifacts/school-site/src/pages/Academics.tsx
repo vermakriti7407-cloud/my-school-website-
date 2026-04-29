@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FlaskConical, Calculator, Landmark } from "lucide-react";
+import { BookOpen, FlaskConical, Calculator, Landmark, Award } from "lucide-react";
 import { motion } from "framer-motion";
+import { SectionHeader } from "@/components/layout/SectionHeader";
+import { SectionDivider } from "@/components/layout/SectionDivider";
 
 export default function Academics() {
   useEffect(() => {
@@ -46,8 +48,8 @@ export default function Academics() {
         </div>
       </div>
 
-      <div className="aurora-bg relative py-24">
-        <div className="container mx-auto px-4 max-w-6xl space-y-32">
+      <div className="bg-[#fdfbf7] relative py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl space-y-20 md:space-y-32">
           
           {/* Affiliation Info */}
           <motion.section 
@@ -58,38 +60,38 @@ export default function Academics() {
             className="text-center space-y-6 max-w-3xl mx-auto"
           >
             <div className="w-20 h-20 bg-white shadow-xl text-accent rounded-2xl flex items-center justify-center mx-auto mb-8 border border-border">
-              <BookOpen className="w-10 h-10" />
+              <BookOpen className="w-10 h-10 text-secondary" />
             </div>
             <h2 className="text-4xl font-serif font-bold text-primary">Affiliated to BSEH, Bhiwani</h2>
-            <p className="text-xl text-muted-foreground leading-relaxed font-light">
+            <p className="text-lg text-muted-foreground leading-relaxed font-light">
               Our institution rigorously follows the curriculum and guidelines prescribed by the Board of School Education Haryana (BSEH). We offer a structured, progressive academic framework from Nursery up to Class 12, ensuring our students are impeccably prepared for board examinations and global competitive entrance tests.
             </p>
           </motion.section>
 
+          <SectionDivider />
+
           {/* Curriculum Levels */}
           <section>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-4xl font-serif font-bold text-primary">Curriculum Structure</h2>
-              <div className="w-24 h-[3px] bg-secondary mx-auto mt-6"></div>
-            </motion.div>
+            <SectionHeader 
+              eyebrow="Academic Stages"
+              title="Curriculum Structure"
+              icon={<Award className="w-5 h-5 text-secondary" />}
+            />
             
             <Tabs defaultValue="primary" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-12 glass p-2 rounded-2xl h-auto gap-2">
-                <TabsTrigger value="pre" className="rounded-xl py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white">Pre-Primary</TabsTrigger>
-                <TabsTrigger value="primary" className="rounded-xl py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white">Primary</TabsTrigger>
-                <TabsTrigger value="middle" className="rounded-xl py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white">Middle</TabsTrigger>
-                <TabsTrigger value="secondary" className="rounded-xl py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white">Secondary</TabsTrigger>
-              </TabsList>
+              <div className="flex justify-center mb-12">
+                <TabsList className="bg-white p-2 rounded-2xl h-auto flex flex-wrap gap-2 border border-border/40 shadow-lg justify-center">
+                  <TabsTrigger value="pre" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Pre-Primary</TabsTrigger>
+                  <TabsTrigger value="primary" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Primary</TabsTrigger>
+                  <TabsTrigger value="middle" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Middle</TabsTrigger>
+                  <TabsTrigger value="secondary" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Secondary</TabsTrigger>
+                </TabsList>
+              </div>
               
               <TabsContent value="pre" className="mt-0">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                  <Card className="glass-card border-white/60 p-6 md:p-10 rounded-[2rem]">
-                    <CardHeader className="px-0 pt-0">
+                  <Card className="bg-white border-border/40 p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl mx-auto">
+                    <CardHeader className="px-0 pt-0 text-center md:text-left border-b border-border/50 pb-6 mb-6">
                       <CardTitle className="font-serif text-3xl text-primary">Pre-Primary (Nursery, LKG, UKG)</CardTitle>
                     </CardHeader>
                     <CardContent className="px-0 pb-0 space-y-6 text-muted-foreground text-lg font-light">
@@ -107,8 +109,8 @@ export default function Academics() {
               
               <TabsContent value="primary" className="mt-0">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                  <Card className="glass-card border-white/60 p-6 md:p-10 rounded-[2rem]">
-                    <CardHeader className="px-0 pt-0">
+                  <Card className="bg-white border-border/40 p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl mx-auto">
+                    <CardHeader className="px-0 pt-0 text-center md:text-left border-b border-border/50 pb-6 mb-6">
                       <CardTitle className="font-serif text-3xl text-primary">Primary (Classes 1 to 5)</CardTitle>
                     </CardHeader>
                     <CardContent className="px-0 pb-0 space-y-6 text-muted-foreground text-lg font-light">
@@ -125,8 +127,8 @@ export default function Academics() {
 
               <TabsContent value="middle" className="mt-0">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                  <Card className="glass-card border-white/60 p-6 md:p-10 rounded-[2rem]">
-                    <CardHeader className="px-0 pt-0">
+                  <Card className="bg-white border-border/40 p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl mx-auto">
+                    <CardHeader className="px-0 pt-0 text-center md:text-left border-b border-border/50 pb-6 mb-6">
                       <CardTitle className="font-serif text-3xl text-primary">Middle (Classes 6 to 8)</CardTitle>
                     </CardHeader>
                     <CardContent className="px-0 pb-0 space-y-6 text-muted-foreground text-lg font-light">
@@ -143,8 +145,8 @@ export default function Academics() {
 
               <TabsContent value="secondary" className="mt-0">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                  <Card className="glass-card border-white/60 p-6 md:p-10 rounded-[2rem]">
-                    <CardHeader className="px-0 pt-0">
+                  <Card className="bg-white border-border/40 p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl mx-auto">
+                    <CardHeader className="px-0 pt-0 text-center md:text-left border-b border-border/50 pb-6 mb-6">
                       <CardTitle className="font-serif text-3xl text-primary">Secondary (Classes 9 & 10)</CardTitle>
                     </CardHeader>
                     <CardContent className="px-0 pb-0 space-y-6 text-muted-foreground text-lg font-light">
@@ -161,15 +163,19 @@ export default function Academics() {
             </Tabs>
           </section>
 
+          <SectionDivider />
+
           {/* Senior Secondary Streams */}
-          <section className="glass-dark rounded-[3rem] p-10 md:p-16 border border-white/10 relative overflow-hidden">
+          <section className="bg-[hsl(220_60%_12%)] rounded-3xl p-10 md:p-16 border border-primary/20 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none"></div>
             
-            <div className="text-center mb-16 relative z-10">
-              <h2 className="text-4xl font-serif font-bold text-white">Senior Secondary (Classes 11 & 12)</h2>
-              <p className="text-white/70 mt-4 text-xl font-light">Comprehensive streams offering specialized knowledge for elite higher education.</p>
-              <div className="w-24 h-[3px] bg-secondary mx-auto mt-8"></div>
-            </div>
+            <SectionHeader 
+              eyebrow="Specialization"
+              title="Senior Secondary (Classes 11 & 12)"
+              subtitle="Comprehensive streams offering specialized knowledge for elite higher education."
+              dark={true}
+              icon={<Award className="w-5 h-5 text-secondary" />}
+            />
 
             <motion.div 
               variants={staggerContainer}
@@ -179,7 +185,7 @@ export default function Academics() {
               className="grid md:grid-cols-3 gap-8 relative z-10"
             >
               <motion.div variants={fadeUp}>
-                <Card className="bg-white/5 border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors duration-300 h-full rounded-[2rem] text-white">
+                <Card className="bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-300 h-full rounded-2xl text-white shadow-xl hover:-translate-y-1">
                   <CardHeader className="pb-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-secondary to-yellow-500 text-secondary-foreground rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                       <FlaskConical className="w-8 h-8" />
@@ -198,7 +204,7 @@ export default function Academics() {
               </motion.div>
 
               <motion.div variants={fadeUp}>
-                <Card className="bg-white/5 border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors duration-300 h-full rounded-[2rem] text-white">
+                <Card className="bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-300 h-full rounded-2xl text-white shadow-xl hover:-translate-y-1">
                   <CardHeader className="pb-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-accent to-blue-400 text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                       <Calculator className="w-8 h-8" />
@@ -216,7 +222,7 @@ export default function Academics() {
               </motion.div>
 
               <motion.div variants={fadeUp}>
-                <Card className="bg-white/5 border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors duration-300 h-full rounded-[2rem] text-white">
+                <Card className="bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-300 h-full rounded-2xl text-white shadow-xl hover:-translate-y-1">
                   <CardHeader className="pb-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-rose-500 to-red-400 text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                       <Landmark className="w-8 h-8" />
@@ -235,28 +241,34 @@ export default function Academics() {
             </motion.div>
           </section>
 
+          <SectionDivider />
+
           {/* Assessment Approach */}
           <motion.section 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeUp}
-            className="space-y-8 max-w-4xl"
+            className="max-w-4xl mx-auto"
           >
-            <h2 className="text-4xl font-serif font-bold text-primary">Assessment & Evaluation</h2>
+            <SectionHeader 
+              eyebrow="Evaluation"
+              title="Assessment & Evaluation"
+              align="center"
+            />
             <div className="prose prose-lg max-w-none text-muted-foreground font-light leading-relaxed">
-              <p className="text-xl">Our evaluation system is meticulously designed to assess the holistic development of the child, moving far beyond rote memorization into real-world application.</p>
+              <p className="text-xl text-center mb-12">Our evaluation system is meticulously designed to assess the holistic development of the child, moving far beyond rote memorization into real-world application.</p>
               <ul className="mt-8 space-y-6 list-none pl-0">
-                <li className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center shrink-0 mt-1">1</div>
+                <li className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0 border border-secondary/20">1</div>
                   <div><strong className="text-foreground text-xl block mb-1">Continuous Comprehensive Evaluation</strong> Regular unit tests, periodic assessments, and term exams to monitor progress continuously and scientifically.</div>
                 </li>
-                <li className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center shrink-0 mt-1">2</div>
+                <li className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0 border border-secondary/20">2</div>
                   <div><strong className="text-foreground text-xl block mb-1">Practical Learning</strong> Extensive emphasis on high-tech laboratory work in Sciences, and rigorous project work in Humanities and Commerce.</div>
                 </li>
-                <li className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center shrink-0 mt-1">3</div>
+                <li className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0 border border-secondary/20">3</div>
                   <div><strong className="text-foreground text-xl block mb-1">Co-Scholastic Assessment</strong> Advanced grading on life skills, leadership attitudes, core values, sports excellence, and co-curricular dominance.</div>
                 </li>
               </ul>

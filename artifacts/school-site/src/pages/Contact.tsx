@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { motion } from "framer-motion";
+import { SectionHeader } from "@/components/layout/SectionHeader";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -57,9 +58,17 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className="aurora-bg relative py-24">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid lg:grid-cols-5 gap-16">
+      <div className="bg-background relative py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+          
+          <SectionHeader 
+            eyebrow="Connect"
+            title="Reach Out to Us"
+            subtitle="Our dedicated team is ready to assist you with any questions about admissions, facilities, or academics."
+            icon={<Phone className="w-5 h-5 text-secondary" />}
+          />
+
+          <div className="grid lg:grid-cols-5 gap-16 mt-16">
             
             {/* Contact Info */}
             <motion.div 
@@ -67,59 +76,52 @@ export default function Contact() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
-              className="lg:col-span-2 space-y-12"
+              className="lg:col-span-2 space-y-8"
             >
-              <div>
-                <h2 className="text-4xl font-serif font-bold text-primary mb-8">Reach Out</h2>
-                <div className="space-y-8">
-                  
-                  <div className="flex items-start gap-6 group">
-                    <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-accent shrink-0 border border-border group-hover:-translate-y-1 transition-transform duration-300">
-                      <MapPin className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-xl text-primary mb-2">Campus Address</h3>
-                      <p className="text-muted-foreground text-base leading-relaxed font-light">
-                        Anglo Sanskrit Sr. Sec. School,<br/>
-                        Pundri, District Kaithal,<br/>
-                        Haryana - 136026
-                      </p>
-                    </div>
-                  </div>
+              <div className="flex items-start gap-6 group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-secondary shrink-0 border border-border/40 group-hover:-translate-y-1 transition-transform duration-300">
+                  <MapPin className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xl text-primary mb-2">Campus Address</h3>
+                  <p className="text-muted-foreground text-base leading-relaxed font-light">
+                    Anglo Sanskrit Sr. Sec. School,<br/>
+                    Pundri, District Kaithal,<br/>
+                    Haryana - 136026
+                  </p>
+                </div>
+              </div>
 
-                  <div className="flex items-start gap-6 group">
-                    <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-accent shrink-0 border border-border group-hover:-translate-y-1 transition-transform duration-300">
-                      <Phone className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-xl text-primary mb-2">Telephone</h3>
-                      <p className="text-muted-foreground text-base font-light mb-1"><span className="font-medium text-foreground">Reception:</span> +91-9876543210</p>
-                      <p className="text-muted-foreground text-base font-light"><span className="font-medium text-foreground">Admissions:</span> +91-9876543211</p>
-                    </div>
-                  </div>
+              <div className="flex items-start gap-6 group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-secondary shrink-0 border border-border/40 group-hover:-translate-y-1 transition-transform duration-300">
+                  <Phone className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xl text-primary mb-2">Telephone</h3>
+                  <p className="text-muted-foreground text-base font-light mb-1"><span className="font-medium text-foreground">Reception:</span> +91-9876543210</p>
+                  <p className="text-muted-foreground text-base font-light"><span className="font-medium text-foreground">Admissions:</span> +91-9876543211</p>
+                </div>
+              </div>
 
-                  <div className="flex items-start gap-6 group">
-                    <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-accent shrink-0 border border-border group-hover:-translate-y-1 transition-transform duration-300">
-                      <Mail className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-xl text-primary mb-2">Email Directory</h3>
-                      <p className="text-muted-foreground text-base font-light mb-1">info@anglosanskritschool.com</p>
-                      <p className="text-muted-foreground text-base font-light">admissions@anglosanskritschool.com</p>
-                    </div>
-                  </div>
+              <div className="flex items-start gap-6 group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-secondary shrink-0 border border-border/40 group-hover:-translate-y-1 transition-transform duration-300">
+                  <Mail className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xl text-primary mb-2">Email Directory</h3>
+                  <p className="text-muted-foreground text-base font-light mb-1">info@anglosanskritschool.com</p>
+                  <p className="text-muted-foreground text-base font-light">admissions@anglosanskritschool.com</p>
+                </div>
+              </div>
 
-                  <div className="flex items-start gap-6 group">
-                    <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-accent shrink-0 border border-border group-hover:-translate-y-1 transition-transform duration-300">
-                      <Clock className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-xl text-primary mb-2">Visiting Hours</h3>
-                      <p className="text-muted-foreground text-base font-light mb-1">Mon-Sat: 08:00 AM - 02:00 PM</p>
-                      <p className="text-sm text-red-500 font-medium uppercase tracking-wider mt-2">Sundays & Public Holidays Closed</p>
-                    </div>
-                  </div>
-
+              <div className="flex items-start gap-6 group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-secondary shrink-0 border border-border/40 group-hover:-translate-y-1 transition-transform duration-300">
+                  <Clock className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-xl text-primary mb-2">Visiting Hours</h3>
+                  <p className="text-muted-foreground text-base font-light mb-1">Mon-Sat: 08:00 AM - 02:00 PM</p>
+                  <p className="text-sm text-red-500 font-medium uppercase tracking-wider mt-2">Sundays & Public Holidays Closed</p>
                 </div>
               </div>
             </motion.div>
@@ -132,43 +134,43 @@ export default function Contact() {
               variants={fadeUp}
               className="lg:col-span-3"
             >
-              <Card className="glass-card border-white/60 shadow-2xl rounded-[3rem] overflow-hidden">
-                <CardContent className="p-10 md:p-14">
+              <Card className="bg-white border border-border/40 shadow-xl rounded-[2rem] overflow-hidden hover:shadow-2xl transition-shadow">
+                <CardContent className="p-8 md:p-12">
                   <h2 className="text-3xl font-serif font-bold text-primary mb-8">Send a Direct Message</h2>
-                  <form onSubmit={handleSubmit} className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="space-y-3">
-                        <label htmlFor="name" className="text-sm font-bold tracking-wide uppercase text-muted-foreground">Parent/Guardian Name *</label>
-                        <Input id="name" required placeholder="Enter your full name" className="bg-white/50 border-white/60 h-14 rounded-xl text-base px-6 focus-visible:ring-accent" />
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label htmlFor="name" className="text-sm font-semibold tracking-wider uppercase text-muted-foreground">Parent/Guardian Name *</label>
+                        <Input id="name" required placeholder="Enter your full name" className="bg-background border-border/50 h-14 rounded-xl text-base px-6 focus-visible:ring-secondary" />
                       </div>
-                      <div className="space-y-3">
-                        <label htmlFor="phone" className="text-sm font-bold tracking-wide uppercase text-muted-foreground">Phone Number *</label>
-                        <Input id="phone" type="tel" required placeholder="10-digit mobile number" className="bg-white/50 border-white/60 h-14 rounded-xl text-base px-6 focus-visible:ring-accent" />
+                      <div className="space-y-2">
+                        <label htmlFor="phone" className="text-sm font-semibold tracking-wider uppercase text-muted-foreground">Phone Number *</label>
+                        <Input id="phone" type="tel" required placeholder="10-digit mobile number" className="bg-background border-border/50 h-14 rounded-xl text-base px-6 focus-visible:ring-secondary" />
                       </div>
                     </div>
                     
-                    <div className="space-y-3">
-                      <label htmlFor="email" className="text-sm font-bold tracking-wide uppercase text-muted-foreground">Email Address</label>
-                      <Input id="email" type="email" placeholder="Enter your email" className="bg-white/50 border-white/60 h-14 rounded-xl text-base px-6 focus-visible:ring-accent" />
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-semibold tracking-wider uppercase text-muted-foreground">Email Address</label>
+                      <Input id="email" type="email" placeholder="Enter your email" className="bg-background border-border/50 h-14 rounded-xl text-base px-6 focus-visible:ring-secondary" />
                     </div>
 
-                    <div className="space-y-3">
-                      <label htmlFor="subject" className="text-sm font-bold tracking-wide uppercase text-muted-foreground">Subject</label>
-                      <Input id="subject" required placeholder="Admission Inquiry / General Query" className="bg-white/50 border-white/60 h-14 rounded-xl text-base px-6 focus-visible:ring-accent" />
+                    <div className="space-y-2">
+                      <label htmlFor="subject" className="text-sm font-semibold tracking-wider uppercase text-muted-foreground">Subject</label>
+                      <Input id="subject" required placeholder="Admission Inquiry / General Query" className="bg-background border-border/50 h-14 rounded-xl text-base px-6 focus-visible:ring-secondary" />
                     </div>
 
-                    <div className="space-y-3">
-                      <label htmlFor="message" className="text-sm font-bold tracking-wide uppercase text-muted-foreground">Message *</label>
+                    <div className="space-y-2">
+                      <label htmlFor="message" className="text-sm font-semibold tracking-wider uppercase text-muted-foreground">Message *</label>
                       <Textarea 
                         id="message" 
                         required 
                         placeholder="How can we assist you today?" 
-                        className="min-h-[160px] bg-white/50 border-white/60 rounded-xl text-base p-6 focus-visible:ring-accent resize-none" 
+                        className="min-h-[160px] bg-background border-border/50 rounded-xl text-base p-6 focus-visible:ring-secondary resize-none" 
                       />
                     </div>
 
-                    <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-lg h-16 rounded-full shadow-xl transition-transform hover:scale-[1.02]" disabled={isSubmitting}>
-                      {isSubmitting ? "Transmitting..." : "Send Message"}
+                    <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-lg h-16 rounded-full shadow-lg transition-transform hover:scale-[1.02]" disabled={isSubmitting}>
+                      {isSubmitting ? "Transmitting..." : <><Send className="w-5 h-5 mr-2" /> Send Message</>}
                     </Button>
                   </form>
                 </CardContent>
@@ -182,7 +184,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="mt-24 rounded-[3rem] overflow-hidden border-[8px] border-white shadow-2xl h-[500px] w-full bg-muted relative"
+            className="mt-24 rounded-[2rem] overflow-hidden border border-border/40 shadow-xl h-[500px] w-full relative group"
           >
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27606.314275098902!2d76.54146030310237!3d29.75704987413644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390df03ddc2c0199%3A0xcda8d7e0fb8f0e5!2sPundri%2C%20Haryana%20136026!5e0!3m2!1sen!2sin!4v1708451234567!5m2!1sen!2sin" 
@@ -193,7 +195,7 @@ export default function Contact() {
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
               title="Pundri Google Map"
-              className="absolute inset-0 grayscale contrast-125 opacity-90"
+              className="absolute inset-0 transition-all duration-700 opacity-90 group-hover:opacity-100"
             ></iframe>
           </motion.div>
 

@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
+import { SectionHeader } from "@/components/layout/SectionHeader";
+import { Camera } from "lucide-react";
 
 const galleryImages = [
   { id: 1, category: "campus", src: "/hero-1.jpg", alt: "Premium Campus Exterior" },
@@ -41,12 +43,12 @@ export default function Gallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="relative group rounded-[2rem] overflow-hidden bg-muted shadow-lg border border-border break-inside-avoid"
+            className="relative group rounded-2xl overflow-hidden bg-muted shadow-lg hover:shadow-2xl border border-border/40 break-inside-avoid transition-all duration-300"
           >
             <img 
               src={img.src} 
               alt={img.alt} 
-              className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-110"
+              className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220_60%_10%)]/90 via-[hsl(220_60%_10%)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
@@ -88,16 +90,23 @@ export default function Gallery() {
         </div>
       </div>
 
-      <div className="aurora-bg min-h-screen">
-        <div className="container mx-auto px-4 py-24 max-w-7xl">
-          <Tabs defaultValue="all" className="w-full">
+      <div className="bg-background min-h-screen relative py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+          
+          <SectionHeader 
+            eyebrow="Our Moments"
+            title="Campus in Pictures"
+            icon={<Camera className="w-5 h-5 text-secondary" />}
+          />
+
+          <Tabs defaultValue="all" className="w-full mt-12">
             <div className="flex justify-center mb-12">
-              <TabsList className="glass p-2 rounded-2xl h-auto flex-wrap justify-center gap-2 border-white/60 shadow-xl">
-                <TabsTrigger value="all" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">All</TabsTrigger>
-                <TabsTrigger value="campus" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Campus</TabsTrigger>
-                <TabsTrigger value="academic" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Academics & Labs</TabsTrigger>
-                <TabsTrigger value="events" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Events & Cultural</TabsTrigger>
-                <TabsTrigger value="sports" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Sports</TabsTrigger>
+              <TabsList className="bg-white p-2 rounded-2xl h-auto flex flex-wrap justify-center gap-2 border border-border/40 shadow-lg">
+                <TabsTrigger value="all" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">All</TabsTrigger>
+                <TabsTrigger value="campus" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Campus</TabsTrigger>
+                <TabsTrigger value="academic" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Academics & Labs</TabsTrigger>
+                <TabsTrigger value="events" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Events & Cultural</TabsTrigger>
+                <TabsTrigger value="sports" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Sports</TabsTrigger>
               </TabsList>
             </div>
             

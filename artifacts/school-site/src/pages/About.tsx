@@ -5,6 +5,10 @@ import { SectionHeader } from "@/components/layout/SectionHeader";
 import { SectionDivider } from "@/components/layout/SectionDivider";
 import { BookOpen, Star, Shield, Award } from "lucide-react";
 
+import photo2 from "@assets/photo2_1777460778481.jpg";
+import photo6 from "@assets/photo6_1777460848228.jpg";
+import photo1 from "@assets/photo1_1777460765776.jpg";
+
 export default function About() {
   useEffect(() => {
     document.title = "About Us - Anglo Sanskrit Sr. Sec. School, Pundri";
@@ -49,17 +53,17 @@ export default function About() {
               className="space-y-8"
             >
               <SectionHeader 
-                eyebrow="The AS Story"
+                eyebrow="Established 1916 • A 109-year legacy"
                 title="Decades of Shaping Global Leaders"
                 align="left"
                 icon={<BookOpen className="w-5 h-5 text-secondary" />}
                 className="mb-8"
               />
               <p className="text-muted-foreground leading-relaxed text-base font-light">
-                Established with a visionary mandate to provide elite education in the heart of Pundri, Anglo Sanskrit Senior Secondary School stands as an undisputed beacon of learning. For decades, we have been committed to offering a premium educational experience that bridges the gap between profound Indian values and modern global demands.
+                Founded in 1916, Anglo Sanskrit Senior Secondary School stands as one of the oldest educational institutions in the Pundri region. Serving the Pundri-Kaithal community for over 109 years, we are a privately aided pillar of education in Haryana.
               </p>
               <p className="text-muted-foreground leading-relaxed text-base font-light">
-                Our campus is a thriving, high-tech ecosystem where students from diverse backgrounds converge to learn, grow, and excel. Affiliated with the Board of School Education Haryana (BSEH), we ensure rigorous academic standards alongside holistic, character-driven development.
+                Our institution has continuously evolved while preserving its heritage values. We offer a bilingual (Hindi and English) medium, co-educational environment from Class 1 to Class 12, ensuring rigorous academic standards alongside character-driven development.
               </p>
             </motion.div>
             
@@ -71,7 +75,7 @@ export default function About() {
               className="relative"
             >
               <div className="aspect-square md:aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white z-10 relative">
-                <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1200&auto=format&fit=crop" alt="School Building" className="w-full h-full object-cover" />
+                <img src={photo2} alt="School Building" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -top-10 -right-10 w-48 h-48 bg-secondary/30 rounded-full z-0 blur-3xl"></div>
               <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-accent/20 rounded-full z-0 blur-3xl"></div>
@@ -81,7 +85,7 @@ export default function About() {
           <SectionDivider />
 
           {/* Vision & Mission */}
-          <div className="grid md:grid-cols-2 gap-10 mb-32 mt-20">
+          <div className="grid md:grid-cols-2 gap-10 mb-16 mt-20">
             <motion.div 
               initial="hidden"
               whileInView="visible"
@@ -97,7 +101,7 @@ export default function About() {
                 Our Vision
               </h3>
               <p className="text-muted-foreground text-base leading-relaxed font-light relative z-10">
-                To be an international institution of excellence that nurtures intellectual curiosity, cultural pride, and uncompromising moral integrity, empowering students to become responsible global citizens while staying deeply connected to their roots.
+                To be an institution of excellence that nurtures intellectual curiosity, cultural pride, and uncompromising moral integrity, empowering students to become responsible citizens while staying deeply connected to their roots.
               </p>
             </motion.div>
             
@@ -118,7 +122,7 @@ export default function About() {
               <ul className="space-y-4 text-muted-foreground text-base font-light relative z-10">
                 <li className="flex items-start gap-3">
                   <span className="text-secondary font-bold mt-1 text-xl">•</span>
-                  To provide accessible, elite-tier English-medium education.
+                  To provide accessible, high-quality bilingual (Hindi & English) education.
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-secondary font-bold mt-1 text-xl">•</span>
@@ -126,11 +130,20 @@ export default function About() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-secondary font-bold mt-1 text-xl">•</span>
-                  To equip students with advanced technological skills for the 21st century.
+                  To equip students with knowledge and skills for the 21st century.
                 </li>
               </ul>
             </motion.div>
           </div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="w-full rounded-[2rem] overflow-hidden shadow-2xl border-border/40 relative mb-32 h-64 md:h-96"
+          >
+             <img src={photo6} alt="Beti Bachao Beti Padhao" className="w-full h-full object-cover object-center" />
+          </motion.div>
 
           <SectionDivider />
 

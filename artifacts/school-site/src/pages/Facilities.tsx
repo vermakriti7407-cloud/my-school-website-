@@ -1,58 +1,69 @@
 import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
-import { MonitorPlay, FlaskConical, BookOpen, Trophy, Bus, Stethoscope, MicVocal } from "lucide-react";
+import { MonitorPlay, BookOpen, Trophy, Building2, Droplets, Zap, ShieldCheck, Users, Route } from "lucide-react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { SectionDivider } from "@/components/layout/SectionDivider";
 
+import photo2 from "@assets/photo2_1777460778481.jpg";
+import photo3 from "@assets/photo3_1777460794570.jpg";
+import photo5 from "@assets/photo5_1777460832099.jpg";
+import photo6 from "@assets/photo6_1777460848228.jpg";
+
 const facilitiesList = [
   {
-    title: "Smart Classrooms",
-    icon: MonitorPlay,
-    desc: "Interactive digital boards in climate-controlled environments, making learning highly engaging and visually stimulating.",
-    img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop"
+    title: "50 Well-Maintained Classrooms",
+    icon: Building2,
+    desc: "Fifty spacious classrooms—every one in good condition—designed for focused learning and comfort throughout the academic year.",
+    img: photo6
   },
   {
-    title: "Advanced Science Labs",
-    icon: FlaskConical,
-    desc: "Premium, fully-equipped laboratories for Physics, Chemistry, and Biology to facilitate cutting-edge hands-on experiments.",
-    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Technology Center",
-    icon: MonitorPlay,
-    desc: "A futuristic computer lab with high-speed internet and modern workstations to prepare students for the digital era.",
-    img: "https://images.unsplash.com/photo-1547082299-de196ea013d6?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Knowledge Resource Center",
+    title: "Library — 5,000+ Books",
     icon: BookOpen,
-    desc: "An expansive, quiet space stocked with thousands of premium books, digital archives, and international periodicals.",
-    img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
+    desc: "An extensive library stocked with over 5,000 books spanning academics, literature, reference, and competitive exam preparation.",
+    img: photo3
   },
   {
-    title: "Elite Sports Complex",
+    title: "Computer Lab — 85 Systems",
+    icon: MonitorPlay,
+    desc: "A fully functional computer lab with 85 working computers used for teaching, learning, and digital literacy across all classes.",
+    img: photo5
+  },
+  {
+    title: "Spacious Playground",
     icon: Trophy,
-    desc: "Professional-grade sporting facilities for athletics, cricket, and team sports, promoting elite physical fitness.",
-    img: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=800&auto=format&fit=crop"
+    desc: "A large open playground for daily sports, physical education, athletics, and inter-house competitions.",
+    img: photo2
   },
   {
-    title: "Grand Auditorium",
-    icon: MicVocal,
-    desc: "A state-of-the-art acoustic hall used for cultural symposiums, debates, and international guest lectures.",
-    img: "https://images.unsplash.com/photo-1505236858219-8359eb29e329?q=80&w=800&auto=format&fit=crop"
+    title: "Pucca Boundary Wall",
+    icon: ShieldCheck,
+    desc: "A complete pucca (permanent) boundary wall surrounds the entire campus—ensuring student safety and a secure learning environment.",
+    img: photo2
   },
   {
-    title: "Premium Transport",
-    icon: Bus,
-    desc: "A modern fleet of GPS-tracked, air-conditioned school buses providing safe and comfortable transit.",
-    img: "https://images.unsplash.com/photo-1557223562-6c77ef16010f?q=80&w=800&auto=format&fit=crop"
+    title: "Tap Water & Electricity",
+    icon: Droplets,
+    desc: "Reliable functional tap-water drinking facility and uninterrupted electric connection across the entire school building.",
+    img: photo5
   },
   {
-    title: "Wellness Clinic",
-    icon: Stethoscope,
-    desc: "A dedicated health center staffed by qualified professionals to ensure complete student well-being.",
-    img: "https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=800&auto=format&fit=crop"
+    title: "Separate Toilet Blocks",
+    icon: Users,
+    desc: "Ten boys' toilets and ten girls' toilets — all functional and regularly maintained for hygiene and student well-being.",
+    img: photo6
+  },
+  {
+    title: "Principal & Admin Rooms",
+    icon: Zap,
+    desc: "A dedicated room for the Head Master/Principal plus two additional rooms for non-teaching activities and administration.",
+    img: photo3
+  },
+  {
+    title: "All-Weather Road Access",
+    icon: Route,
+    desc: "The school is approachable by an all-weather road, ensuring safe and easy access for students and parents in every season.",
+    img: photo2
   }
 ];
 
@@ -136,14 +147,17 @@ function FacilityCard({ facility, index }: { facility: any, index: number }) {
 
 export default function Facilities() {
   useEffect(() => {
-    document.title = "Premium Facilities - Anglo Sanskrit Sr. Sec. School, Pundri";
+    document.title = "Facilities - Anglo Sanskrit Sr. Sec. School, Pundri";
   }, []);
 
   return (
     <Layout>
       {/* Header */}
       <div className="bg-primary text-primary-foreground pt-32 pb-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-luminosity"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
+          style={{ backgroundImage: `url(${photo5})` }}
+        ></div>
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-transparent"></div>
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/20 rounded-full blur-[100px]"></div>
         
@@ -153,10 +167,10 @@ export default function Facilities() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-secondary font-bold tracking-[0.2em] uppercase text-sm mb-6 block">World-Class Infrastructure</span>
+            <span className="text-secondary font-bold tracking-[0.2em] uppercase text-sm mb-6 block">Our Infrastructure</span>
             <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white drop-shadow-lg">Campus Facilities</h1>
             <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light leading-relaxed">
-              Providing an elite, high-tech environment designed to foster innovation, comfort, and holistic excellence.
+              Honest, well-maintained infrastructure built around what students need most — safe spaces, reliable utilities, and room to learn and grow.
             </p>
           </motion.div>
         </div>
@@ -166,9 +180,9 @@ export default function Facilities() {
         <div className="container mx-auto px-4 md:px-8 max-w-7xl">
           
           <SectionHeader 
-            eyebrow="Our Amenities"
-            title="Premium Learning Environment"
-            icon={<MonitorPlay className="w-5 h-5 text-secondary" />}
+            eyebrow="Verified Amenities"
+            title="What Our Campus Offers"
+            icon={<Building2 className="w-5 h-5 text-secondary" />}
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
@@ -178,6 +192,35 @@ export default function Facilities() {
           </div>
 
           <SectionDivider />
+
+          {/* Quick Facts */}
+          <div className="bg-primary text-primary-foreground rounded-3xl p-10 md:p-14 mt-8 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-[100px]"></div>
+            <div className="relative z-10 grid md:grid-cols-2 gap-10">
+              <div>
+                <span className="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">At a Glance</span>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">
+                  A Heritage Campus Built for Today
+                </h2>
+                <p className="text-white/80 text-lg leading-relaxed font-light">
+                  Established in 1916, our campus has been continuously cared for, expanded and modernised. Every facility listed here has been independently verified and is fully operational.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { num: "50", label: "Classrooms" },
+                  { num: "5,000+", label: "Library Books" },
+                  { num: "85", label: "Computers" },
+                  { num: "20", label: "Toilets (10 + 10)" },
+                ].map((item, i) => (
+                  <div key={i} className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center">
+                    <div className="text-4xl md:text-5xl font-serif font-bold text-secondary mb-2">{item.num}</div>
+                    <div className="text-white/70 text-sm tracking-wider uppercase font-semibold">{item.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>

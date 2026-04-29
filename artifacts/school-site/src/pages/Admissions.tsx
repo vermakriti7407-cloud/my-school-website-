@@ -64,8 +64,8 @@ export default function Admissions() {
               <CalendarDays className="w-10 h-10" />
             </div>
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-3xl font-serif font-bold text-primary mb-2">Admissions Open for 2024-25</h3>
-              <p className="text-muted-foreground text-lg font-light">Registration forms for Nursery to Class 11 are available at the school reception between 9:00 AM and 2:00 PM on all working days.</p>
+              <h3 className="text-3xl font-serif font-bold text-primary mb-2">Admissions Open</h3>
+              <p className="text-muted-foreground text-lg font-light">Registration forms for Class 1 to Class 11 are available at the school reception between 9:00 AM and 2:00 PM on all working days.</p>
             </div>
             <div className="shrink-0 w-full md:w-auto">
                <Button size="lg" className="w-full bg-primary text-white hover:bg-primary/90 h-14 px-8 rounded-full shadow-lg font-bold text-base transition-transform hover:scale-105">
@@ -140,9 +140,6 @@ export default function Admissions() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/50 text-muted-foreground text-base">
-                      <tr className="hover:bg-primary/5 transition-colors"><td className="p-6 font-semibold text-foreground">Nursery</td><td className="p-6 font-light">3+ Years</td></tr>
-                      <tr className="hover:bg-primary/5 transition-colors"><td className="p-6 font-semibold text-foreground">LKG</td><td className="p-6 font-light">4+ Years</td></tr>
-                      <tr className="hover:bg-primary/5 transition-colors"><td className="p-6 font-semibold text-foreground">UKG</td><td className="p-6 font-light">5+ Years</td></tr>
                       <tr className="hover:bg-primary/5 transition-colors"><td className="p-6 font-semibold text-foreground">Class 1</td><td className="p-6 font-light">6+ Years</td></tr>
                       <tr className="hover:bg-primary/5 transition-colors"><td className="p-6 font-semibold text-foreground">Class 2 onwards</td><td className="p-6 font-light">Based on previous class passing certificate</td></tr>
                     </tbody>

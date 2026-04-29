@@ -64,7 +64,7 @@ export default function Academics() {
             </div>
             <h2 className="text-4xl font-serif font-bold text-primary">Affiliated to BSEH, Bhiwani</h2>
             <p className="text-lg text-muted-foreground leading-relaxed font-light">
-              Our institution rigorously follows the curriculum and guidelines prescribed by the Board of School Education Haryana (BSEH). We offer a structured, progressive academic framework from Nursery up to Class 12, ensuring our students are impeccably prepared for board examinations and global competitive entrance tests.
+              Our institution rigorously follows the curriculum and guidelines prescribed by the Board of School Education Haryana (BSEH). We offer a structured, progressive academic framework from Class 1 up to Class 12, ensuring our students are impeccably prepared for board examinations and global competitive entrance tests.
             </p>
           </motion.section>
 
@@ -81,31 +81,11 @@ export default function Academics() {
             <Tabs defaultValue="primary" className="w-full">
               <div className="flex justify-center mb-12">
                 <TabsList className="bg-white p-2 rounded-2xl h-auto flex flex-wrap gap-2 border border-border/40 shadow-lg justify-center">
-                  <TabsTrigger value="pre" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Pre-Primary</TabsTrigger>
                   <TabsTrigger value="primary" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Primary</TabsTrigger>
                   <TabsTrigger value="middle" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Middle</TabsTrigger>
                   <TabsTrigger value="secondary" className="rounded-xl px-6 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Secondary</TabsTrigger>
                 </TabsList>
               </div>
-              
-              <TabsContent value="pre" className="mt-0">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                  <Card className="bg-white border-border/40 p-8 md:p-12 rounded-2xl shadow-xl max-w-4xl mx-auto">
-                    <CardHeader className="px-0 pt-0 text-center md:text-left border-b border-border/50 pb-6 mb-6">
-                      <CardTitle className="font-serif text-3xl text-primary">Pre-Primary (Nursery, LKG, UKG)</CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-0 pb-0 space-y-6 text-muted-foreground text-lg font-light">
-                      <p>The foundation years focus on play-way methods, sensory-motor development, and basic cognitive skills. We emphasize a stress-free environment where learning happens through structured exploration.</p>
-                      <ul className="space-y-4">
-                        <li className="flex items-start gap-3"><span className="text-secondary font-bold text-xl leading-none">•</span> Language & Phonics (English & Hindi)</li>
-                        <li className="flex items-start gap-3"><span className="text-secondary font-bold text-xl leading-none">•</span> Number concepts & basic mathematics</li>
-                        <li className="flex items-start gap-3"><span className="text-secondary font-bold text-xl leading-none">•</span> Rhymes, stories, and expressive art & craft</li>
-                        <li className="flex items-start gap-3"><span className="text-secondary font-bold text-xl leading-none">•</span> Environmental awareness and social skills</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </TabsContent>
               
               <TabsContent value="primary" className="mt-0">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>

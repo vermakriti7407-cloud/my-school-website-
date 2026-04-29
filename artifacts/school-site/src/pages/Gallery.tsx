@@ -5,18 +5,20 @@ import { motion } from "framer-motion";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { Camera } from "lucide-react";
 
+import photo1 from "@assets/photo1_1777460765776.jpg";
+import photo2 from "@assets/photo2_1777460778481.jpg";
+import photo3 from "@assets/photo3_1777460794570.jpg";
+import photo4 from "@assets/photo4_1777460808796.jpg";
+import photo5 from "@assets/photo5_1777460832099.jpg";
+import photo6 from "@assets/photo6_1777460848228.jpg";
+
 const galleryImages = [
-  { id: 1, category: "campus", src: "/hero-1.jpg", alt: "Premium Campus Exterior" },
-  { id: 2, category: "campus", src: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1200&auto=format&fit=crop", alt: "Architectural Corridors" },
-  { id: 3, category: "academic", src: "/hero-2.jpg", alt: "Smart Classroom Session" },
-  { id: 4, category: "academic", src: "/gallery-5.jpg", alt: "Advanced Science Labs" },
-  { id: 5, category: "academic", src: "/gallery-4.jpg", alt: "Knowledge Resource Center" },
-  { id: 6, category: "events", src: "/gallery-1.jpg", alt: "Morning Assembly" },
-  { id: 7, category: "events", src: "/gallery-3.jpg", alt: "Cultural Excellence Festival" },
-  { id: 8, category: "sports", src: "/hero-3.jpg", alt: "Elite Sports Ground" },
-  { id: 9, category: "sports", src: "/gallery-2.jpg", alt: "Athletics Championship" },
-  { id: 10, category: "events", src: "/gallery-6.jpg", alt: "Art Class & Expressions" },
-  { id: 11, category: "campus", src: "/gallery-7.jpg", alt: "Outdoor Recreation" },
+  { id: 1, category: "campus", src: photo2, alt: "School Main Entrance & Signboard" },
+  { id: 2, category: "campus", src: photo4, alt: "Front Lawn & Building View" },
+  { id: 3, category: "campus", src: photo3, alt: "Inner Courtyard & Corridors" },
+  { id: 4, category: "campus", src: photo5, alt: "Garden Quadrangle & Arched Verandah" },
+  { id: 5, category: "campus", src: photo6, alt: "Beti Bachao Beti Padhao Wing" },
+  { id: 6, category: "events", src: photo1, alt: "School Management Welcome Ceremony" },
 ];
 
 export default function Gallery() {
@@ -71,7 +73,10 @@ export default function Gallery() {
     <Layout>
       {/* Header */}
       <div className="bg-primary text-primary-foreground pt-32 pb-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-luminosity"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
+          style={{ backgroundImage: `url(${photo3})` }}
+        ></div>
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-transparent"></div>
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[100px]"></div>
         
@@ -84,7 +89,7 @@ export default function Gallery() {
             <span className="text-secondary font-bold tracking-[0.2em] uppercase text-sm mb-6 block">Visual Journey</span>
             <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white drop-shadow-lg">Photo Gallery</h1>
             <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light leading-relaxed">
-              Glimpses of world-class infrastructure, events, and everyday excellence at our premium campus.
+              Authentic moments from our 109-year-old campus in Pundri — buildings, gardens, corridors, and community.
             </p>
           </motion.div>
         </div>
@@ -104,17 +109,13 @@ export default function Gallery() {
               <TabsList className="bg-white p-2 rounded-2xl h-auto flex flex-wrap justify-center gap-2 border border-border/40 shadow-lg">
                 <TabsTrigger value="all" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">All</TabsTrigger>
                 <TabsTrigger value="campus" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Campus</TabsTrigger>
-                <TabsTrigger value="academic" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Academics & Labs</TabsTrigger>
-                <TabsTrigger value="events" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Events & Cultural</TabsTrigger>
-                <TabsTrigger value="sports" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Sports</TabsTrigger>
+                <TabsTrigger value="events" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold transition-all">Events</TabsTrigger>
               </TabsList>
             </div>
             
             <TabsContent value="all">{renderGrid('all')}</TabsContent>
             <TabsContent value="campus">{renderGrid('campus')}</TabsContent>
-            <TabsContent value="academic">{renderGrid('academic')}</TabsContent>
             <TabsContent value="events">{renderGrid('events')}</TabsContent>
-            <TabsContent value="sports">{renderGrid('sports')}</TabsContent>
           </Tabs>
         </div>
       </div>

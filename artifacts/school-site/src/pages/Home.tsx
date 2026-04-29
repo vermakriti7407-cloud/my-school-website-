@@ -14,21 +14,27 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { SectionDivider } from "@/components/layout/SectionDivider";
 
+import photo2 from "@assets/photo2_1777460778481.jpg";
+import photo4 from "@assets/photo4_1777460808796.jpg";
+import photo3 from "@assets/photo3_1777460794570.jpg";
+import photo5 from "@assets/photo5_1777460832099.jpg";
+import photo6 from "@assets/photo6_1777460848228.jpg";
+
 const HERO_SLIDES = [
   {
-    image: "/hero-1.jpg",
+    image: photo2,
     title: "Anglo Sanskrit Sr. Sec. School",
-    subtitle: "Where Tradition Meets Tomorrow"
+    subtitle: "Where Tradition Meets Tomorrow — Since 1916"
   },
   {
-    image: "/hero-2.jpg",
-    title: "Modern Infrastructure",
-    subtitle: "Smart classrooms, advanced labs, and a campus designed for the leaders of tomorrow"
+    image: photo4,
+    title: "A Century of Excellence",
+    subtitle: "Over 109 years of nurturing minds in Pundri, Kaithal"
   },
   {
-    image: "/hero-3.jpg",
-    title: "Holistic Development",
-    subtitle: "Academics, sports, arts, and values — nurturing every dimension of a child"
+    image: photo3,
+    title: "Holistic Education",
+    subtitle: "Hindi & English medium • Co-educational • Classes 1 to 12"
   }
 ];
 
@@ -222,10 +228,10 @@ export default function Home() {
             className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
           >
             {[
-              { icon: Users, stat: 1500, suffix: "+", label: "Happy Students" },
-              { icon: GraduationCap, stat: 35, suffix: "+", label: "Years of Excellence" },
-              { icon: BookOpen, stat: 80, suffix: "+", label: "Expert Faculty" },
-              { icon: Trophy, stat: 150, suffix: "+", label: "Awards & Achievements" },
+              { icon: Trophy, stat: 109, suffix: "+", label: "Years of Legacy" },
+              { icon: BookOpen, stat: 50, suffix: "", label: "Classrooms" },
+              { icon: BookOpen, stat: 5000, suffix: "+", label: "Library Books" },
+              { icon: MonitorPlay, stat: 85, suffix: "", label: "Computers" },
             ].map((fact, i) => (
               <motion.div key={i} variants={fadeUp} className="flex flex-col items-center text-center group p-6 md:p-8 rounded-2xl glass-dark border border-white/10 hover:bg-white/5 transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-1">
                 <div className="w-20 h-20 rounded-2xl bg-white/5 shadow-inner flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors duration-500 border border-white/10">
@@ -256,9 +262,9 @@ export default function Home() {
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
             {[
-              { src: "/gallery-1.jpg", alt: "Morning Assembly", title: "Discipline & Devotion" },
-              { src: "/gallery-2.jpg", alt: "Sports Day", title: "Athletic Excellence" },
-              { src: "/gallery-3.jpg", alt: "Cultural Event", title: "Performing Arts" },
+              { src: photo3, alt: "Internal Campus View", title: "Spacious Corridors" },
+              { src: photo5, alt: "Inner Courtyard", title: "Lush Green Lawns" },
+              { src: photo6, alt: "School Building", title: "Beti Bachao Beti Padhao" },
               { src: "/gallery-4.jpg", alt: "Library", title: "Knowledge Hub" },
               { src: "/gallery-5.jpg", alt: "Science Lab", title: "Practical Learning" },
               { src: "/gallery-6.jpg", alt: "Art Class", title: "Creative Expressions" },
@@ -314,12 +320,12 @@ export default function Home() {
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {[
-              { title: "Smart Classrooms", icon: MonitorPlay, desc: "Interactive digital boards in climate-controlled environments." },
-              { title: "Science Labs", icon: FlaskConical, desc: "Premium, fully-equipped laboratories for Physics, Chemistry, and Biology." },
-              { title: "Library", icon: BookOpen, desc: "Expansive space stocked with thousands of books and digital archives." },
-              { title: "Sports Complex", icon: Trophy, desc: "Professional-grade sporting facilities for athletics and team sports." },
-              { title: "Premium Transport", icon: Bus, desc: "Modern fleet of GPS-tracked, air-conditioned school buses." },
-              { title: "Grand Auditorium", icon: MicVocal, desc: "State-of-the-art acoustic hall for cultural symposiums and events." }
+              { title: "Computer Lab", icon: MonitorPlay, desc: "Computer lab with 85 functional computers for teaching and learning." },
+              { title: "Library", icon: BookOpen, desc: "Expansive space stocked with 5,000+ books for students of all classes." },
+              { title: "Playground", icon: Trophy, desc: "Spacious playground offering adequate space for physical development." },
+              { title: "Well-maintained Classrooms", icon: BookOpen, desc: "50 well-maintained classrooms (all in good condition) with reliable electricity." },
+              { title: "Essential Amenities", icon: CheckCircle2, desc: "Functional drinking water facility and separate toilets for boys and girls." },
+              { title: "Secure Campus", icon: CheckCircle2, desc: "Pucca private school building with permanent boundary wall." }
             ].map((facility, i) => (
               <motion.div key={i} variants={fadeUp}>
                 <Card className="bg-white border-border/40 h-full p-8 group relative overflow-hidden transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-2xl rounded-2xl">
@@ -495,10 +501,10 @@ export default function Home() {
                 <div className="flex gap-6 py-4">
                   {[
                     { name: "Anjali Gupta", class: "Mother of Class V student", quote: "The school provides an excellent balance of traditional values and modern education. My son loves going to school every day." },
-                    { name: "Rajesh Kumar", class: "Father of Class IX student", quote: "Impressed by the dedication of the teachers. The smart classrooms and labs have really sparked my daughter's interest in Science." },
-                    { name: "Pooja Desai", class: "Mother of Class II student", quote: "The focus on holistic development is remarkable. It's not just about studies, but also sports, arts, and character building." },
-                    { name: "Vikram Singh", class: "Father of Class XII student", quote: "The board result preparation is outstanding. The faculty provides individual attention which gave my child great confidence." },
-                    { name: "Neha Sharma", class: "Mother of UKG student", quote: "A very safe and nurturing environment for young children. The teachers are incredibly caring and supportive." }
+                    { name: "Rajesh Kumar", class: "Father of Class IX student", quote: "Impressed by the dedication of the teachers. The computer lab and library have really sparked my daughter's curiosity." },
+                    { name: "Pooja Desai", class: "Mother of Class II student", quote: "The focus on holistic development is remarkable. It's not just about studies, but also sports, character, and Indian values." },
+                    { name: "Vikram Singh", class: "Father of Class XII student", quote: "The BSEH board result preparation is outstanding. The faculty provides individual attention which gave my child great confidence." },
+                    { name: "Neha Sharma", class: "Mother of Class III student", quote: "A safe, well-maintained heritage campus with caring teachers. Truly a school the whole Pundri community trusts." }
                   ].map((testimonial, i) => (
                     <div key={i} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-6 first:pl-0">
                       <Card className="bg-white border-border/40 h-full rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">

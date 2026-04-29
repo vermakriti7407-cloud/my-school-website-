@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Menu, Phone, Mail, ChevronRight } from "lucide-react";
+import { Menu, Phone, MapPin, ChevronRight, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
@@ -39,30 +39,34 @@ export function Navbar() {
   const mutedTextClass = isHome && !scrolled ? "text-white/80" : "text-muted-foreground";
 
   return (
-    <>
+    <div className="fixed w-full z-50 top-0 flex flex-col">
       <AnimatePresence>
         {(!scrolled || !isHome) && (
           <motion.div 
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="bg-primary text-primary-foreground py-2 px-4 text-xs md:text-sm font-medium flex justify-between items-center z-50 relative overflow-hidden"
+            className="bg-primary text-primary-foreground py-2 px-4 text-xs md:text-sm font-medium flex justify-between items-center relative overflow-hidden shrink-0"
           >
             <div className="container mx-auto flex justify-between items-center">
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-secondary" /> +91-9876543210</span>
-                <span className="hidden md:flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-secondary" /> info@anglosanskritschool.com</span>
+                <span className="flex items-center gap-1.5 hover:text-secondary cursor-pointer transition-colors"><MapPin className="h-3.5 w-3.5 text-secondary" /> <span className="hidden sm:inline">Pundri, Kaithal, Haryana - 136026</span><span className="sm:hidden">Pundri, Haryana</span></span>
               </div>
-              <div className="flex items-center gap-4">
-                <span className="hidden md:inline font-devanagari text-secondary">तमसो मा ज्योतिर्गमय</span>
-                <span className="opacity-90 border-l border-white/20 pl-4">Affiliated to BSEH, Bhiwani</span>
+              <div className="hidden md:flex items-center gap-4">
+                <span className="flex items-center gap-1.5 hover:text-secondary cursor-pointer transition-colors"><Phone className="h-3.5 w-3.5 text-secondary" /> +91-9876543210</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <a href="#" className="hover:text-secondary transition-colors"><Facebook className="w-4 h-4" /></a>
+                <a href="#" className="hover:text-secondary transition-colors"><Instagram className="w-4 h-4" /></a>
+                <a href="#" className="hover:text-secondary transition-colors"><Youtube className="w-4 h-4" /></a>
+                <a href="#" className="hover:text-secondary transition-colors"><Twitter className="w-4 h-4" /></a>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
       
-      <header className={`fixed w-full z-40 transition-all duration-500 ${isHome && !scrolled ? 'top-0 mt-8 md:mt-10' : 'top-0'} ${navClass}`}>
+      <header className={`w-full transition-all duration-500 shrink-0 ${navClass}`}>
         <div className="container mx-auto px-4 h-20 md:h-24 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-4 group">
             <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center font-display font-bold text-xl md:text-2xl border transition-all duration-500 group-hover:scale-105 shadow-lg ${isHome && !scrolled ? 'bg-white/10 text-white border-white/30 backdrop-blur-md' : 'bg-primary text-white border-primary/20'}`}>
@@ -75,14 +79,14 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20">
+          <nav className="hidden xl:flex items-center gap-1 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20">
             {NAV_LINKS.map((link) => {
               const isActive = location === link.path;
               return (
                 <Link key={link.path} href={link.path}>
                   <Button 
                     variant="ghost" 
-                    className={`font-medium rounded-full transition-all duration-300 px-5 ${
+                    className={`font-medium rounded-full transition-all duration-300 px-4 ${
                       isActive 
                         ? (isHome && !scrolled ? 'bg-white/20 text-white' : 'bg-primary text-white hover:bg-primary hover:text-white')
                         : (isHome && !scrolled ? 'text-white hover:bg-white/10' : 'text-foreground hover:bg-black/5')
@@ -95,7 +99,7 @@ export function Navbar() {
             })}
           </nav>
 
-          <div className="hidden lg:block">
+          <div className="hidden xl:block">
             <Link href="/admissions">
               <Button className={`rounded-full px-6 font-semibold transition-all duration-300 ${isHome && !scrolled ? 'bg-white text-primary hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-[0_0_20px_rgba(244,185,66,0.3)]'}`}>
                 Admissions
@@ -104,7 +108,7 @@ export function Navbar() {
           </div>
 
           {/* Mobile Nav */}
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={`${textClass} hover:bg-white/10`}>
@@ -157,6 +161,6 @@ export function Navbar() {
           </div>
         </div>
       </header>
-    </>
+    </div>
   );
 }

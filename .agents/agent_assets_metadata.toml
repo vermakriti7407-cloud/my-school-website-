@@ -1,8 +1,67 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "xlpuwNg7HAXKwT5PheU0l"
 uri = "file://artifacts/school-site/public/hero-bg.png"
 type = "image"
 title = "Modern international school campus"
+
+[[outputs]]
+id = "wu8V_wO17Hczy-urdKaqS"
+uri = "file://artifacts/school-site/public/hero-1.jpg"
+type = "image"
+title = "school building exterior at golden hour"
+
+[[outputs]]
+id = "OvWgaB7p2WlPh1UvYGYzF"
+uri = "file://artifacts/school-site/public/hero-2.jpg"
+type = "image"
+title = "modern high school classroom with diverse students learning"
+
+[[outputs]]
+id = "P5eL1RgWf4Akvzruaizbi"
+uri = "file://artifacts/school-site/public/hero-3.jpg"
+type = "image"
+title = "high school students participating in sports or cultural event"
+
+[[outputs]]
+id = "2u9dbavwqpxRWG1ZigHTe"
+uri = "file://artifacts/school-site/public/gallery-1.jpg"
+type = "image"
+title = "high school students in assembly"
+
+[[outputs]]
+id = "F2gI-95i-BTTcByOs8a-i"
+uri = "file://artifacts/school-site/public/gallery-2.jpg"
+type = "image"
+title = "high school students playing sports on a field"
+
+[[outputs]]
+id = "9KEcZPQhFOkOthu3luN9F"
+uri = "file://artifacts/school-site/public/gallery-3.jpg"
+type = "image"
+title = "high school students performing in a cultural event or play"
+
+[[outputs]]
+id = "26qdhnEapXuA16mAr6G2g"
+uri = "file://artifacts/school-site/public/gallery-4.jpg"
+type = "image"
+title = "high school library with students reading"
+
+[[outputs]]
+id = "pEDq3mAAsNYAYzFevRqpd"
+uri = "file://artifacts/school-site/public/gallery-5.jpg"
+type = "image"
+title = "high school science lab with students doing experiments"
+
+[[outputs]]
+id = "kikoj12ZwvCrat-7ycj0j"
+uri = "file://artifacts/school-site/public/gallery-6.jpg"
+type = "image"
+title = "high school art class with students painting"
+
+[[outputs]]
+id = "iMdwGYVDhUMW25HOM12GR"
+uri = "file://artifacts/school-site/public/gallery-7.jpg"
+type = "image"
+title = "students enjoying picnic or outdoor activities"

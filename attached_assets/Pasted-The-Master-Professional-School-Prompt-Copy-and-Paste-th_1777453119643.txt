@@ -1,0 +1,51 @@
+The "Master Professional School" Prompt
+Copy and Paste this:
+
+"Build a highly professional, multi-section school website using HTML5, Tailwind CSS, and JavaScript. The design must be clean, elite, and fully responsive.
+
+Required Sections in Order:
+
+Top Utility Bar: A slim bar at the very top with: Location (Left), Contact Number (Center), and Social Media Icons (Right). Use a dark professional background.
+
+Navigation Bar: Sticky navbar featuring the School Logo (left), School Name in elegant typography, and Menu Links (Home, About, Academics, Faculty, Admissions, Contact).
+
+Dynamic Hero Slider: A full-width image slider that auto-changes every 3 seconds.
+
+Each slide must have a unique overlay text.
+
+Slide 1: School Name + Tagline.
+
+Slide 2: 'Modern Infrastructure' + Subtext.
+
+Slide 3: 'Holistic Development' + Subtext.
+
+Smooth fade-in/out transitions.
+
+Latest News Ticker: A professional, horizontally scrolling news bar just below the hero section for 'Important Announcements'.
+
+Life at School: A masonry-style photo gallery showing school activities with hover-zoom effects.
+
+About Us (Stats Section): A section showing the school's journey with 'Counter-up' animations for: Total Students, Years of Experience, and Award Wins.
+
+School Facilities: A grid of cards with icons for: Smart Classes, Science Lab, Sports Complex, and Transport.
+
+Faculty & Achievements: A 'Meet our Experts' section with profile cards and a dedicated 'Hall of Fame' for student achievements.
+
+Admissions & Reviews: A clear 'Admission Process' step-by-step guide (1-2-3-4), followed by a 'Parent Testimonials' slider with star ratings.
+
+Contact Us & Footer: A dual-column section with a professional 'Query Form' on one side and an embedded Map/Address on the other. The Footer should have quick links and a 'Back to Top' button.
+
+Design Theme: Use a Royal Navy Blue and Gold color scheme. All images should have rounded corners and subtle shadows. Add AOS (Animate On Scroll) library for a smooth reveal effect."
+
+📸 Photos Kahan Kon-si Lagaen? (Placement Guide)
+Kyunki aapke paas kam photos hain, unhe samajhdari se yahan set karein:
+
+Hero Slider (The 3-Sec Slider): * Slide 1: Apne school ki jo sabse achhi photo hai (Building ya Entrance) wo yahan lagayein.
+
+Slide 2 & 3: Yahan internet se "Modern Classroom" ya "Happy Students" ki high-quality placeholder photos laga dein.
+
+Life of School: * Yahan apni doosri real photo lagayein (agar koi activity ki hai). Baaki boxes mein internet se "Sports Day" ya "Library" ki photos dalen.
+
+Faculty Section: * Yahan abhi real photos ki jagah "Generic Teacher" ki icons ya avatars use karein.
+
+Facilities: * Yahan photos ki jagah Icons (like FontAwesome) use karna zyada "Unique" aur "Clean" lagega.

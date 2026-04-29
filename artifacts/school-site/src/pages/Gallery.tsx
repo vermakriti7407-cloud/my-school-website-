@@ -4,15 +4,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 
 const galleryImages = [
-  { id: 1, category: "campus", src: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1200&auto=format&fit=crop", alt: "Premium Campus Exterior" },
+  { id: 1, category: "campus", src: "/hero-1.jpg", alt: "Premium Campus Exterior" },
   { id: 2, category: "campus", src: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1200&auto=format&fit=crop", alt: "Architectural Corridors" },
-  { id: 3, category: "academic", src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop", alt: "Smart Classroom Session" },
-  { id: 4, category: "academic", src: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=1200&auto=format&fit=crop", alt: "Advanced Science Labs" },
-  { id: 5, category: "academic", src: "https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?q=80&w=1200&auto=format&fit=crop", alt: "Knowledge Resource Center" },
-  { id: 6, category: "events", src: "https://images.unsplash.com/photo-1505236858219-8359eb29e329?q=80&w=1200&auto=format&fit=crop", alt: "Annual Global Symposium" },
-  { id: 7, category: "events", src: "https://images.unsplash.com/photo-1511629091441-ee46146481b6?q=80&w=1200&auto=format&fit=crop", alt: "Cultural Excellence Festival" },
-  { id: 8, category: "sports", src: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1200&auto=format&fit=crop", alt: "Elite Sports Ground" },
-  { id: 9, category: "sports", src: "https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=1200&auto=format&fit=crop", alt: "Athletics Championship" },
+  { id: 3, category: "academic", src: "/hero-2.jpg", alt: "Smart Classroom Session" },
+  { id: 4, category: "academic", src: "/gallery-5.jpg", alt: "Advanced Science Labs" },
+  { id: 5, category: "academic", src: "/gallery-4.jpg", alt: "Knowledge Resource Center" },
+  { id: 6, category: "events", src: "/gallery-1.jpg", alt: "Morning Assembly" },
+  { id: 7, category: "events", src: "/gallery-3.jpg", alt: "Cultural Excellence Festival" },
+  { id: 8, category: "sports", src: "/hero-3.jpg", alt: "Elite Sports Ground" },
+  { id: 9, category: "sports", src: "/gallery-2.jpg", alt: "Athletics Championship" },
+  { id: 10, category: "events", src: "/gallery-6.jpg", alt: "Art Class & Expressions" },
+  { id: 11, category: "campus", src: "/gallery-7.jpg", alt: "Outdoor Recreation" },
 ];
 
 export default function Gallery() {
@@ -30,7 +32,7 @@ export default function Gallery() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 mt-12"
+        className="columns-1 sm:columns-2 md:columns-3 gap-6 md:gap-8 mt-12 space-y-6 md:space-y-8"
       >
         {images.map((img, index) => (
           <motion.div 
@@ -39,12 +41,12 @@ export default function Gallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="relative group rounded-[2rem] overflow-hidden aspect-[4/3] bg-muted shadow-lg border border-border"
+            className="relative group rounded-[2rem] overflow-hidden bg-muted shadow-lg border border-border break-inside-avoid"
           >
             <img 
               src={img.src} 
               alt={img.alt} 
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-110"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220_60%_10%)]/90 via-[hsl(220_60%_10%)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
@@ -94,7 +96,7 @@ export default function Gallery() {
                 <TabsTrigger value="all" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">All</TabsTrigger>
                 <TabsTrigger value="campus" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Campus</TabsTrigger>
                 <TabsTrigger value="academic" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Academics & Labs</TabsTrigger>
-                <TabsTrigger value="events" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Events</TabsTrigger>
+                <TabsTrigger value="events" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Events & Cultural</TabsTrigger>
                 <TabsTrigger value="sports" className="rounded-xl px-8 py-3 text-base data-[state=active]:bg-primary data-[state=active]:text-white font-semibold">Sports</TabsTrigger>
               </TabsList>
             </div>

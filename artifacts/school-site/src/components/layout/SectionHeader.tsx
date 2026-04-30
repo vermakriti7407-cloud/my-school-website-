@@ -29,7 +29,6 @@ export function SectionHeader({
       )}
     >
       <div className={cn("inline-flex items-center gap-3 mb-4", align === "center" ? "justify-center w-full" : "w-full")}>
-        {align === "center" && <span className="w-10 h-[2px] bg-secondary shrink-0"></span>}
         <span className="text-secondary font-semibold tracking-widest uppercase text-xs flex items-center gap-2">
           {icon && (
             <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
@@ -38,7 +37,6 @@ export function SectionHeader({
           )}
           {eyebrow}
         </span>
-        <span className="w-10 h-[2px] bg-secondary shrink-0"></span>
       </div>
       <h2
         className={cn(

@@ -42,12 +42,9 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navClass = isHome && !scrolled
-    ? "bg-transparent border-transparent"
-    : "glass border-b shadow-sm";
-
-  const textClass = isHome && !scrolled ? "text-white" : "text-primary";
-  const mutedTextClass = isHome && !scrolled ? "text-white/80" : "text-muted-foreground";
+  const navClass = "glass border-b shadow-sm";
+  const textClass = "text-primary";
+  const mutedTextClass = "text-muted-foreground";
 
   return (
     <>
@@ -80,7 +77,7 @@ export function Navbar() {
         <header className={`w-full transition-all duration-300 ${navClass}`}>
           <div className="container mx-auto px-4 h-20 md:h-24 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-4 group">
-              <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center font-display font-bold text-xl md:text-2xl border transition-all duration-500 group-hover:scale-105 shadow-lg ${isHome && !scrolled ? 'bg-white/10 text-white border-white/30 backdrop-blur-md' : 'bg-primary text-white border-primary/20'}`}>
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center font-display font-bold text-xl md:text-2xl border transition-all duration-500 group-hover:scale-105 shadow-lg bg-primary text-white border-primary/20">
                 AS
               </div>
               <div className="flex flex-col">
@@ -99,8 +96,8 @@ export function Navbar() {
                       variant="ghost"
                       className={`font-medium rounded-full transition-all duration-300 px-4 ${
                         isActive
-                          ? (isHome && !scrolled ? 'bg-white/20 text-white' : 'bg-primary text-white hover:bg-primary hover:text-white')
-                          : (isHome && !scrolled ? 'text-white hover:bg-white/10' : 'text-foreground hover:bg-black/5')
+                          ? 'bg-primary text-white hover:bg-primary hover:text-white'
+                          : 'text-foreground hover:bg-black/5'
                       }`}
                     >
                       {link.name}
@@ -112,7 +109,7 @@ export function Navbar() {
 
             <div className="hidden xl:block">
               <Link href="/admissions">
-                <Button className={`rounded-full px-6 font-semibold transition-all duration-300 ${isHome && !scrolled ? 'bg-white text-primary hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-[0_0_20px_rgba(244,185,66,0.3)]'}`}>
+                <Button className="rounded-full px-6 font-semibold transition-all duration-300 bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-[0_0_20px_rgba(244,185,66,0.3)]">
                   Admissions
                 </Button>
               </Link>

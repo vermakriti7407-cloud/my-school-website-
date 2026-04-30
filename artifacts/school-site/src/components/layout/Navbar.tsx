@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, Phone, MapPin, ChevronRight, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 const NAV_LINKS = [
@@ -20,13 +20,25 @@ export function Navbar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navTop, setNavTop] = useState(0);
+  const infoBarRef = useRef<HTMLDivElement>(null);
   const isHome = location === "/";
 
   useEffect(() => {
+    const getInfoBarHeight = () => infoBarRef.current?.offsetHeight ?? 0;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const scrollY = window.scrollY;
+      const infoH = getInfoBarHeight();
+      setScrolled(scrollY > 50);
+      // Navbar top tracks the info bar: starts at infoBarHeight, slides to 0 as user scrolls
+      setNavTop(Math.max(0, infoH - scrollY));
     };
-    window.addEventListener("scroll", handleScroll);
+
+    // Set initial top on mount
+    setNavTop(getInfoBarHeight());
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -40,7 +52,7 @@ export function Navbar() {
   return (
     <>
       {/* Info bar — NOT fixed, scrolls away with page */}
-      <div className="bg-primary text-primary-foreground py-2 px-4 text-xs md:text-sm font-medium flex justify-between items-center relative overflow-hidden shrink-0">
+      <div ref={infoBarRef} className="bg-primary text-primary-foreground py-2 px-4 text-xs md:text-sm font-medium relative overflow-hidden">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 hover:text-secondary cursor-pointer transition-colors">
@@ -63,9 +75,9 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Navbar — sticky so it stays at top after info bar scrolls away */}
-      <div className="sticky w-full z-50 top-0">
-        <header className={`w-full transition-all duration-500 shrink-0 ${navClass}`}>
+      {/* Navbar — FIXED, always visible. Starts just below info bar, moves to top-0 as info bar scrolls away */}
+      <div className="fixed w-full z-50 left-0" style={{ top: navTop }}>
+        <header className={`w-full transition-all duration-300 ${navClass}`}>
           <div className="container mx-auto px-4 h-20 md:h-24 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-4 group">
               <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center font-display font-bold text-xl md:text-2xl border transition-all duration-500 group-hover:scale-105 shadow-lg ${isHome && !scrolled ? 'bg-white/10 text-white border-white/30 backdrop-blur-md' : 'bg-primary text-white border-primary/20'}`}>
@@ -161,6 +173,9 @@ export function Navbar() {
           </div>
         </header>
       </div>
+
+      {/* Spacer so page content doesn't go under the fixed navbar */}
+      <div className="h-20 md:h-24" />
     </>
   );
 }

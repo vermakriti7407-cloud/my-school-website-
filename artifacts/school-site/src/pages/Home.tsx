@@ -586,14 +586,14 @@ export default function Home() {
                 className="h-full min-h-[500px] rounded-2xl overflow-hidden relative border border-border/40 shadow-lg"
               >
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27606.314275098902!2d76.54146030310237!3d29.75704987413644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390df03ddc2c0199%3A0xcda8d7e0fb8f0e5!2sPundri%2C%20Haryana%20136026!5e0!3m2!1sen!2sin!4v1708451234567!5m2!1sen!2sin" 
+                  src="https://maps.google.com/maps?q=Anglo+Sanskrit+Sr.+Sec.+School+Pundri+Haryana+136026&output=embed&z=17" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
                   allowFullScreen={false} 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="School Location"
+                  title="Anglo Sanskrit Sr. Sec. School Location"
                   className="absolute inset-0"
                 ></iframe>
                 

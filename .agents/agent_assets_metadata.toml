@@ -65,3 +65,9 @@ id = "iMdwGYVDhUMW25HOM12GR"
 uri = "file://artifacts/school-site/public/gallery-7.jpg"
 type = "image"
 title = "students enjoying picnic or outdoor activities"
+
+[[outputs]]
+id = "np4GdFcXnU6us1dh-9SuP"
+uri = "file://school-site-code.tar.gz"
+type = "unspecified"
+title = "Anglo Sanskrit School - Website Source Code"

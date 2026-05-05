@@ -58,16 +58,16 @@ export function Navbar() {
               <span className="sm:hidden">Pundri, Haryana</span>
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-4">
-            <span className="flex items-center gap-1.5 hover:text-secondary cursor-pointer transition-colors">
+          <div className="flex items-center gap-4">
+            <span className="hidden md:flex items-center gap-1.5 hover:text-secondary cursor-pointer transition-colors">
               <Phone className="h-3.5 w-3.5 text-secondary" /> +91-9876543210
             </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <a href="#" className="hover:text-secondary transition-colors"><Facebook className="w-4 h-4" /></a>
-            <a href="#" className="hover:text-secondary transition-colors"><Instagram className="w-4 h-4" /></a>
-            <a href="#" className="hover:text-secondary transition-colors"><Youtube className="w-4 h-4" /></a>
-            <a href="#" className="hover:text-secondary transition-colors"><Twitter className="w-4 h-4" /></a>
+            <div className="flex items-center gap-3">
+              <a href="#" className="hover:text-secondary transition-colors"><Facebook className="w-4 h-4" /></a>
+              <a href="#" className="hover:text-secondary transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href="#" className="hover:text-secondary transition-colors"><Youtube className="w-4 h-4" /></a>
+              <a href="#" className="hover:text-secondary transition-colors"><Twitter className="w-4 h-4" /></a>
+            </div>
           </div>
         </div>
       </div>

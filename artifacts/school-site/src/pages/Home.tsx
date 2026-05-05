@@ -373,13 +373,14 @@ export default function Home() {
               
               <div className="grid sm:grid-cols-2 gap-6">
                 {[
-                  { name: "Dr. R.K. Sharma", role: "Principal", qual: "Ph.D., M.Ed.", img: "RS" },
-                  { name: "Mrs. M. Verma", role: "HOD Physics", qual: "M.Sc., B.Ed.", img: "MV" },
-                  { name: "Mr. S. Rathi", role: "HOD Mathematics", qual: "M.Sc. Maths", img: "SR" },
-                  { name: "Dr. S. Vats", role: "PGT Sanskrit", qual: "Ph.D. Sanskrit", img: "SV" }
+                  { name: "Dr. R.K. Sharma", role: "Principal", qual: "Ph.D., M.Ed.", img: "RS", photo: "https://i.pravatar.cc/150?img=11" },
+                  { name: "Mrs. M. Verma", role: "HOD Physics", qual: "M.Sc., B.Ed.", img: "MV", photo: "https://i.pravatar.cc/150?img=47" },
+                  { name: "Mr. S. Rathi", role: "HOD Mathematics", qual: "M.Sc. Maths", img: "SR", photo: "https://i.pravatar.cc/150?img=15" },
+                  { name: "Dr. S. Vats", role: "PGT Sanskrit", qual: "Ph.D. Sanskrit", img: "SV", photo: "https://i.pravatar.cc/150?img=53" }
                 ].map((faculty, i) => (
                   <Card key={i} className="bg-white border-border/40 p-6 rounded-2xl flex items-center gap-4 group shadow-lg hover:shadow-xl transition-shadow">
                     <Avatar className="w-16 h-16 border-2 border-primary/10 shadow-sm">
+                      <AvatarImage src={faculty.photo} alt={faculty.name} />
                       <AvatarFallback className="bg-primary/10 text-primary font-bold text-lg group-hover:bg-primary group-hover:text-white transition-colors">{faculty.img}</AvatarFallback>
                     </Avatar>
                     <div>

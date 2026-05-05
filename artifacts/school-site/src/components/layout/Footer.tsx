@@ -177,7 +177,7 @@ export function Footer() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed bottom-8 left-8 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
+        className="fixed bottom-24 right-8 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
         style={{ backgroundColor: "#25D366" }}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Menu, Phone, MapPin, ChevronRight, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
+import { Menu, Phone, MapPin, ChevronRight, Facebook, Instagram, Youtube, Twitter, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useState, useEffect, useRef } from "react";
@@ -67,6 +67,7 @@ export function Navbar() {
               <a href="#" className="hover:text-secondary transition-colors"><Instagram className="w-4 h-4" /></a>
               <a href="#" className="hover:text-secondary transition-colors"><Youtube className="w-4 h-4" /></a>
               <a href="#" className="hover:text-secondary transition-colors"><Twitter className="w-4 h-4" /></a>
+              <a href="mailto:info@anglosanskritschool.com" className="hover:text-secondary transition-colors"><Mail className="w-4 h-4" /></a>
             </div>
           </div>
         </div>

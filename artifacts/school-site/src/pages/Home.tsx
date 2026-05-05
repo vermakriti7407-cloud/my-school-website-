@@ -375,7 +375,7 @@ export default function Home() {
                 {[
                   { name: "Dr. R.K. Sharma", role: "Principal", qual: "Ph.D., M.Ed.", img: "RS", photo: "https://i.pravatar.cc/150?img=11" },
                   { name: "Mrs. M. Verma", role: "HOD Physics", qual: "M.Sc., B.Ed.", img: "MV", photo: "https://i.pravatar.cc/150?img=47" },
-                  { name: "Mr. S. Rathi", role: "HOD Mathematics", qual: "M.Sc. Maths", img: "SR", photo: "https://i.pravatar.cc/150?img=15" },
+                  { name: "Mr. S. Rathi", role: "HOD Mathematics", qual: "M.Sc. Maths", img: "SR", photo: "https://i.pravatar.cc/150?img=67" },
                   { name: "Dr. S. Vats", role: "PGT Sanskrit", qual: "Ph.D. Sanskrit", img: "SV", photo: "https://i.pravatar.cc/150?img=53" }
                 ].map((faculty, i) => (
                   <Card key={i} className="bg-white border-border/40 p-6 rounded-2xl flex items-center gap-4 group shadow-lg hover:shadow-xl transition-shadow">

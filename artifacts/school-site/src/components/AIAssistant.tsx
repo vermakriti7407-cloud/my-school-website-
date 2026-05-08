@@ -6,121 +6,221 @@ import { Button } from "@/components/ui/button";
 const WELCOME_SCRIPT =
   "Namaste! Welcome to Anglo Sanskrit Senior Secondary School, Pundri — a premier institution with over a century of excellence since 1916. I am your AI Guide. I can take you on a complete tour of our school. Click Start Tour to explore, or feel free to browse on your own!";
 
-// ─────────────────────────────────────────────────────────────
-// Face overlay positions on robot2.png displayed at 180×180 px
-//   Left  eye: center (58 px, 55 px), radius ~14 px
-//   Right eye: center (121 px, 55 px), radius ~14 px
-//   Mouth:     center (90 px, 80 px), width ~48 px
-// ─────────────────────────────────────────────────────────────
-function RobotFace({ isSpeaking }: { isSpeaking: boolean }) {
+// ─────────────────────────────────────────────────────────────────────
+// Pure SVG/CSS robot — no image file needed.
+// Matches the reference: round white/lavender head, dark visor,
+// blue glowing eyes, curved smile, "AI" body, antenna, arms.
+// Eyes blink via scaleY; mouth opens/closes for lip-sync.
+// ─────────────────────────────────────────────────────────────────────
+function SVGRobot({ isSpeaking, size = 180 }: { isSpeaking: boolean; size?: number }) {
+  // blink sequence: [open × many, close (0), open × many, close, …]
+  const blinkKF = [1, 1, 1, 1, 1, 1, 0.04, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.04, 1];
+  const blinkT  = { duration: 5.5, repeat: Infinity, ease: [0.4, 0, 0.6, 1] as [number,number,number,number] };
+
+  const lipKF   = [2, 11, 2, 14, 3, 8, 2, 12, 2];
+  const lipT    = { duration: 0.44, repeat: Infinity, ease: "easeInOut" as const };
+
   return (
-    <div style={{ position: "relative", width: 180, height: 180, flexShrink: 0 }}>
-      {/* Robot image — transparent background */}
-      <motion.img
-        src="/robot2.png"
-        alt="AI Guide"
-        draggable={false}
-        style={{
-          width: 180,
-          height: 180,
-          objectFit: "contain",
-          filter: "drop-shadow(0 16px 36px rgba(109,40,217,0.45))",
-          position: "absolute",
-          inset: 0,
-          userSelect: "none",
-        }}
-        animate={
-          isSpeaking
-            ? { y: [0, -6, 2, -5, 0], rotate: [0, 0.8, -0.8, 0] }
-            : { y: [0, -9, 0] }
-        }
-        transition={
-          isSpeaking
-            ? { duration: 0.85, repeat: Infinity, ease: "easeInOut" }
-            : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }
-        }
-      />
+    <motion.svg
+      viewBox="0 0 200 265"
+      width={size}
+      style={{ overflow: "visible" }}
+      animate={
+        isSpeaking
+          ? { y: [0, -6, 2, -5, 0], rotate: [0, 0.8, -0.8, 0] }
+          : { y: [0, -9, 0] }
+      }
+      transition={
+        isSpeaking
+          ? { duration: 0.85, repeat: Infinity, ease: "easeInOut" }
+          : { duration: 2.6,  repeat: Infinity, ease: "easeInOut" }
+      }
+    >
+      <defs>
+        {/* Head gradient — white core → lavender edge */}
+        <radialGradient id="rg-head" cx="38%" cy="30%" r="65%">
+          <stop offset="0%"   stopColor="#f8f4ff" />
+          <stop offset="70%"  stopColor="#ddd6fe" />
+          <stop offset="100%" stopColor="#c4b5fd" />
+        </radialGradient>
 
-      {/* LEFT eyelid */}
-      <motion.div
-        style={{
-          position: "absolute",
-          left: 44,
-          top: 42,
-          width: 30,
-          height: 28,
-          borderRadius: "50%",
-          background: "rgba(13,10,26,0.97)",
-          transformOrigin: "top center",
-          pointerEvents: "none",
-        }}
-        animate={{ scaleY: [0, 0, 0, 0, 0, 1, 0.05, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0.05, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
-      />
+        {/* Body gradient — lavender */}
+        <radialGradient id="rg-body" cx="38%" cy="28%" r="68%">
+          <stop offset="0%"   stopColor="#ede9fe" />
+          <stop offset="70%"  stopColor="#a78bfa" />
+          <stop offset="100%" stopColor="#7c3aed" />
+        </radialGradient>
 
-      {/* RIGHT eyelid */}
-      <motion.div
-        style={{
-          position: "absolute",
-          left: 107,
-          top: 42,
-          width: 30,
-          height: 28,
-          borderRadius: "50%",
-          background: "rgba(13,10,26,0.97)",
-          transformOrigin: "top center",
-          pointerEvents: "none",
-        }}
-        animate={{ scaleY: [0, 0, 0, 0, 0, 1, 0.05, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0.05, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: [0.4, 0, 0.6, 1], delay: 0.05 }}
-      />
+        {/* Eye iris — blue glow */}
+        <radialGradient id="rg-eye" cx="35%" cy="28%" r="70%">
+          <stop offset="0%"   stopColor="#bfdbfe" />
+          <stop offset="55%"  stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#1e40af" />
+        </radialGradient>
 
-      {/* MOUTH / lip-sync */}
-      <motion.div
-        style={{
-          position: "absolute",
-          left: 67,
-          top: 76,
-          width: 46,
-          borderRadius: 10,
-          background: "rgba(10,8,22,0.92)",
-          transformOrigin: "center",
-          pointerEvents: "none",
-        }}
-        animate={
-          isSpeaking
-            ? { height: [3, 11, 3, 15, 3, 9, 2, 13, 3], scaleX: [1, 1.06, 1, 1.05, 1] }
-            : { height: 3 }
-        }
-        transition={
-          isSpeaking
-            ? { duration: 0.46, repeat: Infinity, ease: "easeInOut" }
-            : { duration: 0.2 }
-        }
-      />
+        {/* Arm/hand gradient */}
+        <radialGradient id="rg-arm" cx="35%" cy="30%" r="70%">
+          <stop offset="0%"   stopColor="#ede9fe" />
+          <stop offset="100%" stopColor="#8b5cf6" />
+        </radialGradient>
 
-      {/* Mouth glow while speaking */}
-      {isSpeaking && (
-        <motion.div
-          style={{
-            position: "absolute",
-            left: 52,
-            top: 68,
-            width: 76,
-            height: 26,
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(140,100,255,0.32) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 0.5, repeat: Infinity }}
+        {/* Eye glow filter */}
+        <filter id="eye-glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Soft drop-shadow filter */}
+        <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="5" stdDeviation="5"
+            floodColor="rgba(109,40,217,0.28)" />
+        </filter>
+      </defs>
+
+      {/* ── ANTENNAE ─────────────────────────── */}
+      {/* Left */}
+      <line x1="76" y1="47" x2="65" y2="21"
+        stroke="#9ca3af" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="65" cy="18" r="5.5" fill="#6b7280" />
+      <circle cx="65" cy="18" r="3.5" fill="#e5e7eb" />
+
+      {/* Centre (tallest) */}
+      <line x1="100" y1="42" x2="100" y2="14"
+        stroke="#9ca3af" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="100" cy="10" r="7"   fill="#6b7280" />
+      <circle cx="100" cy="10" r="4.5" fill="#e5e7eb" />
+
+      {/* Right */}
+      <line x1="124" y1="47" x2="135" y2="21"
+        stroke="#9ca3af" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="135" cy="18" r="5.5" fill="#6b7280" />
+      <circle cx="135" cy="18" r="3.5" fill="#e5e7eb" />
+
+      {/* ── HEAD ─────────────────────────────── */}
+      <ellipse cx="100" cy="80" rx="57" ry="52"
+        fill="url(#rg-head)" filter="url(#soft-shadow)" />
+      {/* Head specular shine */}
+      <ellipse cx="80" cy="60" rx="21" ry="13"
+        fill="white" fillOpacity="0.38"
+        transform="rotate(-22 80 60)" />
+
+      {/* ── FACE VISOR (dark panel) ───────────── */}
+      <rect x="50" y="56" width="100" height="58" rx="23" fill="#0d0a1f" />
+      <rect x="52" y="58" width="96"  height="54" rx="21" fill="#130e2a" />
+
+      {/* ── LEFT EYE ─────────────────────────── */}
+      {/* Group centred at (80, 79) so scaleY blinks from the centre */}
+      <g transform="translate(80,79)">
+        <motion.g
+          animate={{ scaleY: blinkKF }}
+          transition={blinkT}
+        >
+          {/* socket */}
+          <circle r="17" fill="#060412" />
+          {/* iris */}
+          <circle r="13" fill="url(#rg-eye)" filter="url(#eye-glow)" />
+          {/* rim */}
+          <circle r="13" fill="none" stroke="#60a5fa"
+            strokeWidth="1.5" strokeOpacity="0.55" />
+          {/* highlights */}
+          <circle cx="-6" cy="-6" r="4.5" fill="white" fillOpacity="0.78" />
+          <circle cx="5"  cy="5"  r="2"   fill="white" fillOpacity="0.35" />
+        </motion.g>
+      </g>
+
+      {/* ── RIGHT EYE ────────────────────────── */}
+      <g transform="translate(120,79)">
+        <motion.g
+          animate={{ scaleY: blinkKF }}
+          transition={{ ...blinkT, delay: 0.06 }}
+        >
+          <circle r="17" fill="#060412" />
+          <circle r="13" fill="url(#rg-eye)" filter="url(#eye-glow)" />
+          <circle r="13" fill="none" stroke="#60a5fa"
+            strokeWidth="1.5" strokeOpacity="0.55" />
+          <circle cx="-6" cy="-6" r="4.5" fill="white" fillOpacity="0.78" />
+          <circle cx="5"  cy="5"  r="2"   fill="white" fillOpacity="0.35" />
+        </motion.g>
+      </g>
+
+      {/* ── MOUTH ────────────────────────────── */}
+      {isSpeaking ? (
+        /* Open oval mouth for lip-sync */
+        <motion.ellipse
+          cx="100" cy="103"
+          rx="13"
+          ry={2}
+          fill="#0a0818"
+          stroke="#4c1d95" strokeWidth="0.8"
+          animate={{ ry: lipKF }}
+          transition={lipT}
+        />
+      ) : (
+        /* Resting cute smile */
+        <path
+          d="M 82,100 Q 100,117 118,100"
+          stroke="white" strokeWidth="3"
+          fill="none" strokeLinecap="round"
         />
       )}
-    </div>
+
+      {/* ── NECK ─────────────────────────────── */}
+      <rect x="82" y="130" width="36" height="22" rx="11"
+        fill="#7c3aed" fillOpacity="0.75" />
+      <rect x="85" y="133" width="30" height="16" rx="8"
+        fill="#a78bfa" fillOpacity="0.65" />
+
+      {/* ── BODY ─────────────────────────────── */}
+      <rect x="36" y="148" width="128" height="98" rx="44"
+        fill="url(#rg-body)" filter="url(#soft-shadow)" />
+      {/* Body shine */}
+      <ellipse cx="74" cy="163" rx="29" ry="18"
+        fill="white" fillOpacity="0.26"
+        transform="rotate(-16 74 163)" />
+
+      {/* AI badge */}
+      <circle cx="100" cy="194" r="18"
+        fill="#0e0b20" fillOpacity="0.78" />
+      <text x="100" y="199"
+        textAnchor="middle" dominantBaseline="middle"
+        fill="white" fontSize="12" fontWeight="700"
+        fontFamily="system-ui, sans-serif" letterSpacing="0.8">
+        AI
+      </text>
+
+      {/* ── LEFT ARM ─────────────────────────── */}
+      <rect x="6" y="155" width="32" height="62" rx="16"
+        fill="url(#rg-arm)" filter="url(#soft-shadow)"
+        transform="rotate(-10 22 186)" />
+      {/* Left hand */}
+      <circle cx="13" cy="218" r="13"
+        fill="#c4b5fd"
+        transform="rotate(-10 13 218)" />
+      <circle cx="13" cy="218" r="13"
+        fill="white" fillOpacity="0.2"
+        transform="rotate(-10 13 218)" />
+
+      {/* ── RIGHT ARM ────────────────────────── */}
+      <rect x="162" y="155" width="32" height="62" rx="16"
+        fill="url(#rg-arm)" filter="url(#soft-shadow)"
+        transform="rotate(10 178 186)" />
+      {/* Right hand */}
+      <circle cx="187" cy="218" r="13"
+        fill="#c4b5fd"
+        transform="rotate(10 187 218)" />
+      <circle cx="187" cy="218" r="13"
+        fill="white" fillOpacity="0.2"
+        transform="rotate(10 187 218)" />
+    </motion.svg>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────
+// Main AI Assistant component
+// ─────────────────────────────────────────────────────────────────────
 export function AIAssistant() {
   const [phase, setPhase] = useState<"welcome" | "minimized" | "hidden">("welcome");
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -144,7 +244,7 @@ export function AIAssistant() {
           typingRef.current = setTimeout(typeNext, 35);
         }
       };
-      typingRef.current = setTimeout(typeNext, 600);
+      typingRef.current = setTimeout(typeNext, 620);
     },
     [stopTyping]
   );
@@ -160,7 +260,7 @@ export function AIAssistant() {
       } catch {
         setIsSpeaking(false);
       }
-    }, 600);
+    }, 620);
     startTyping(WELCOME_SCRIPT);
     return () => {
       clearTimeout(t);
@@ -186,7 +286,9 @@ export function AIAssistant() {
 
   return (
     <>
-      {/* ══════ WELCOME MODAL ══════ */}
+      {/* ══════════════════════════════════════════════
+          WELCOME MODAL
+      ══════════════════════════════════════════════ */}
       <AnimatePresence>
         {phase === "welcome" && (
           <motion.div
@@ -198,7 +300,6 @@ export function AIAssistant() {
             className="fixed inset-0 z-[120] flex items-center justify-center p-4"
             style={{ background: "rgba(0,0,0,0.62)", backdropFilter: "blur(9px)" }}
           >
-            {/* Outer wrapper — robot on top, card below */}
             <motion.div
               initial={{ scale: 0.72, opacity: 0, y: 50 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -206,23 +307,26 @@ export function AIAssistant() {
               transition={{ type: "spring", stiffness: 280, damping: 24 }}
               className="flex flex-col items-center max-w-xs w-full"
             >
-              {/* ── ROBOT ALONE — no card behind it ── */}
+              {/* ── ROBOT — completely alone, no card behind ── */}
               <div
                 className="relative flex items-center justify-center"
-                style={{ width: 180, height: 180, zIndex: 10, marginBottom: -28 }}
+                style={{ zIndex: 10, marginBottom: -30 }}
               >
-                {/* Pulsing rings (behind robot) while speaking */}
+                {/* Speaking rings */}
                 {isSpeaking &&
-                  [130, 158, 186].map((size, i) => (
+                  [120, 148, 176].map((size, i) => (
                     <motion.span
                       key={i}
                       className="absolute rounded-full"
                       style={{
                         width: size,
                         height: size,
-                        border: "1.5px solid rgba(167,139,250,0.55)",
+                        border: "1.5px solid rgba(167,139,250,0.5)",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%,-50%)",
                       }}
-                      animate={{ scale: [1, 1.3, 1], opacity: [0.6, 0, 0.6] }}
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.55, 0, 0.55] }}
                       transition={{
                         duration: 1.6,
                         repeat: Infinity,
@@ -232,15 +336,15 @@ export function AIAssistant() {
                     />
                   ))}
 
-                <RobotFace isSpeaking={isSpeaking} />
+                <SVGRobot isSpeaking={isSpeaking} size={178} />
               </div>
 
-              {/* ── WHITE CARD — starts below the robot ── */}
+              {/* ── WHITE CARD — starts below robot ── */}
               <div
                 className="bg-white w-full rounded-3xl pt-10 pb-6 px-5"
                 style={{ boxShadow: "0 32px 100px rgba(0,0,0,0.45)" }}
               >
-                {/* Badge + wave bars */}
+                {/* Wave bars + badge */}
                 <div className="flex flex-col items-center mb-4">
                   {isSpeaking ? (
                     <div className="flex items-end gap-[3px] mb-2" style={{ height: 16 }}>
@@ -251,7 +355,7 @@ export function AIAssistant() {
                           style={{
                             height: 14,
                             background: "linear-gradient(to top, #7c3aed, #a78bfa)",
-                            originY: 1,
+                            transformOrigin: "bottom",
                           }}
                           animate={{ scaleY: [h, 1, h * 0.3, 1, h] }}
                           transition={{
@@ -273,14 +377,20 @@ export function AIAssistant() {
                       animate={{ scale: [1, 1.5, 1] }}
                       transition={{ duration: 1, repeat: Infinity }}
                     />
-                    <span className="text-xs font-semibold text-violet-700">AI Guide · Online</span>
+                    <span className="text-xs font-semibold text-violet-700">
+                      AI Guide · Online
+                    </span>
                   </div>
                 </div>
 
                 {/* Text box */}
                 <div
                   className="rounded-2xl p-4 text-sm text-slate-700 leading-relaxed"
-                  style={{ minHeight: 82, background: "#f8fafc", border: "1px solid #e2e8f0" }}
+                  style={{
+                    minHeight: 82,
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                  }}
                 >
                   {displayedText}
                   {displayedText.length < WELCOME_SCRIPT.length && (
@@ -315,7 +425,9 @@ export function AIAssistant() {
         )}
       </AnimatePresence>
 
-      {/* ══════ MINIMIZED ROBOT ══════ */}
+      {/* ══════════════════════════════════════════════
+          MINIMIZED ROBOT — bottom-right, draggable
+      ══════════════════════════════════════════════ */}
       <AnimatePresence>
         {phase === "minimized" && (
           <motion.div
@@ -329,10 +441,11 @@ export function AIAssistant() {
             className="fixed z-[110] flex flex-col items-center cursor-grab active:cursor-grabbing select-none"
             style={{ bottom: "11rem", right: "2rem", touchAction: "none" }}
           >
+            {/* Drag badge */}
             <motion.div
               animate={{ y: [0, -5, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-              className="mb-2 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg"
+              className="mb-1 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg"
               style={{ background: "linear-gradient(135deg,#6d28d9,#4f46e5)" }}
             >
               ✨ Drag me
@@ -346,14 +459,9 @@ export function AIAssistant() {
               >
                 <X className="w-3 h-3" />
               </button>
-              <motion.img
-                src="/robot2.png"
-                alt="AI Guide"
-                className="w-16 h-16 object-contain"
-                animate={{ y: [0, -7, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                style={{ filter: "drop-shadow(0 8px 18px rgba(109,40,217,0.45))" }}
-              />
+
+              {/* Mini robot — no speaking, just floating */}
+              <SVGRobot isSpeaking={false} size={64} />
             </div>
           </motion.div>
         )}

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 
@@ -124,6 +124,32 @@ export default function Contact() {
                   <p className="text-sm text-red-500 font-medium uppercase tracking-wider mt-2">Sundays & Public Holidays Closed</p>
                 </div>
               </div>
+
+              {/* WhatsApp CTA */}
+              <a
+                href="https://wa.me/919876543210?text=Namaste%21%20I%20would%20like%20to%20know%20more%20about%20Anglo%20Sanskrit%20Sr.%20Sec.%20School%2C%20Pundri."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="flex items-center gap-4 rounded-2xl px-6 py-4 text-white font-semibold shadow-lg cursor-pointer"
+                  style={{ background: "linear-gradient(135deg, #128C7E, #25D366)" }}
+                >
+                  <span className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 32 32" className="w-5 h-5" fill="white" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.65 4.83 1.79 6.86L2 30l7.34-1.77A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2Zm7.41 19.59c-.31.87-1.82 1.67-2.5 1.77-.65.1-1.47.14-2.37-.15-.55-.17-1.25-.4-2.15-.79-3.79-1.64-6.27-5.45-6.46-5.7-.19-.25-1.56-2.08-1.56-3.97 0-1.89.99-2.82 1.34-3.21.35-.39.76-.49 1.01-.49.25 0 .5.01.72.01.23.01.54-.09.84.64.31.75 1.06 2.6 1.15 2.79.09.19.15.41.03.66-.12.25-.18.4-.36.62-.18.22-.38.49-.54.66-.18.19-.37.39-.16.77.21.38.93 1.54 2 2.49 1.37 1.22 2.53 1.6 2.91 1.78.38.18.6.15.82-.09.22-.24.93-1.09 1.18-1.46.25-.37.5-.31.84-.19.34.12 2.18 1.03 2.55 1.22.37.19.62.28.71.44.09.16.09.93-.22 1.8Z"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-base font-bold leading-tight">Chat on WhatsApp</p>
+                    <p className="text-white/80 text-sm font-normal">Get instant reply from school</p>
+                  </div>
+                  <MessageCircle className="w-5 h-5 ml-auto opacity-70" />
+                </motion.div>
+              </a>
             </motion.div>
 
             {/* Contact Form */}

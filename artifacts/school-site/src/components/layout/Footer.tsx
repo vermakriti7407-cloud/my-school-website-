@@ -171,32 +171,6 @@ export function Footer() {
         </div>
       </div>
       
-      {/* WhatsApp Floating Button */}
-      <motion.a
-        href="https://wa.me/919876543210"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="fixed bottom-24 right-8 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
-        style={{ backgroundColor: "#25D366" }}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 1.5, type: "spring", stiffness: 200 }}
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {/* Pulse ring */}
-        <motion.span
-          className="absolute inset-0 rounded-full"
-          style={{ backgroundColor: "#25D366" }}
-          animate={{ scale: [1, 1.5, 1.5], opacity: [0.6, 0, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-        />
-        <svg viewBox="0 0 32 32" className="w-7 h-7 relative z-10" fill="white" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.65 4.83 1.79 6.86L2 30l7.34-1.77A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2Zm7.41 19.59c-.31.87-1.82 1.67-2.5 1.77-.65.1-1.47.14-2.37-.15-.55-.17-1.25-.4-2.15-.79-3.79-1.64-6.27-5.45-6.46-5.7-.19-.25-1.56-2.08-1.56-3.97 0-1.89.99-2.82 1.34-3.21.35-.39.76-.49 1.01-.49.25 0 .5.01.72.01.23.01.54-.09.84.64.31.75 1.06 2.6 1.15 2.79.09.19.15.41.03.66-.12.25-.18.4-.36.62-.18.22-.38.49-.54.66-.18.19-.37.39-.16.77.21.38.93 1.54 2 2.49 1.37 1.22 2.53 1.6 2.91 1.78.38.18.6.15.82-.09.22-.24.93-1.09 1.18-1.46.25-.37.5-.31.84-.19.34.12 2.18 1.03 2.55 1.22.37.19.62.28.71.44.09.16.09.93-.22 1.8Z"/>
-        </svg>
-      </motion.a>
-
       <AnimatePresence>
         {showTopBtn && (
           <motion.button

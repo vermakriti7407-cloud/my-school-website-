@@ -2,6 +2,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
+
+// Persists for the lifetime of the SPA session — welcome shows only once
+let welcomeShown = false;
 
 const WELCOME_SCRIPT =
   "Namaste! Welcome to Anglo Sanskrit Senior Secondary School, Pundri — a premier institution with over a century of excellence since 1916. I am your AI Guide. I can take you on a complete tour of our school. Click Start Tour to explore, or feel free to browse on your own!";
@@ -222,7 +226,12 @@ function SVGRobot({ isSpeaking, size = 180 }: { isSpeaking: boolean; size?: numb
 // Main AI Assistant component
 // ─────────────────────────────────────────────────────────────────────
 export function AIAssistant() {
-  const [phase, setPhase] = useState<"welcome" | "minimized" | "hidden">("welcome");
+  const [location] = useLocation();
+  const isHome = location === "/";
+
+  // Welcome only on home page and only once per session
+  const initialPhase = (isHome && !welcomeShown) ? "welcome" : "minimized";
+  const [phase, setPhase] = useState<"welcome" | "minimized" | "hidden">(initialPhase);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [displayedText, setDisplayedText] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -249,7 +258,11 @@ export function AIAssistant() {
     [stopTyping]
   );
 
+  // Only run audio + typing when in welcome phase
   useEffect(() => {
+    if (phase !== "welcome") return;
+    welcomeShown = true;
+
     const audio = new Audio("/welcome.mp3");
     audioRef.current = audio;
     audio.addEventListener("ended", () => setIsSpeaking(false));
@@ -268,7 +281,7 @@ export function AIAssistant() {
       audio.src = "";
       stopTyping();
     };
-  }, [startTyping, stopTyping]);
+  }, [phase, startTyping, stopTyping]);
 
   const dismiss = () => {
     audioRef.current?.pause();
@@ -439,7 +452,7 @@ export function AIAssistant() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 240, damping: 22 }}
             className="fixed z-[110] flex flex-col items-center cursor-grab active:cursor-grabbing select-none"
-            style={{ bottom: "11rem", right: "2rem", touchAction: "none" }}
+            style={{ bottom: "6rem", right: "2rem", touchAction: "none" }}
           >
             {/* Drag badge */}
             <motion.div

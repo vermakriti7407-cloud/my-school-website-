@@ -2,7 +2,6 @@ import { ReactNode, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
-import { AIAssistant } from "@/components/AIAssistant";
 
 interface LayoutProps {
   children: ReactNode;
@@ -22,7 +21,6 @@ export function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <Footer />
-      <AIAssistant />
     </div>
   );
 }

@@ -100,20 +100,13 @@ export function AIAssistant() {
   const [tourStep, setTourStep] = useState(0);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const typingRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const scrollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const rafRef = useRef<number | null>(null);
 
-  const stopTyping = useCallback(() => {
-    if (typingRef.current) {
-      clearInterval(typingRef.current);
-      typingRef.current = null;
-    }
-  }, []);
-
-  const stopScrolling = useCallback(() => {
-    if (scrollRef.current) {
-      clearInterval(scrollRef.current);
-      scrollRef.current = null;
+  // Cancel the running RAF loop
+  const stopRAF = useCallback(() => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     }
   }, []);
 
@@ -125,89 +118,98 @@ export function AIAssistant() {
     }
   }, []);
 
-  // Typewriter that runs in sync with audio: reveals text proportionally to audio progress
-  const startAudioSyncedTyping = useCallback(
-    (audio: HTMLAudioElement, text: string) => {
-      stopTyping();
-      setDisplayedText("");
+  const stopAll = useCallback(() => {
+    stopRAF();
+    stopAudio();
+  }, [stopRAF, stopAudio]);
 
-      // Poll audio.currentTime every ~60ms and reveal text proportionally
-      typingRef.current = setInterval(() => {
+  /**
+   * Starts a 60fps RAF loop that:
+   *  - Reveals text word-by-word in sync with audio.currentTime
+   *  - Smoothly scrolls the page in sync with audio.currentTime
+   * Returns a cleanup function.
+   */
+  const startSyncLoop = useCallback(
+    (audio: HTMLAudioElement, text: string, enableScroll: boolean) => {
+      stopRAF();
+      const words = text.split(" ");
+
+      const tick = () => {
+        const currentTime = audio.currentTime;
         const duration = audio.duration;
-        if (!duration || duration === 0 || !isFinite(duration)) return;
-        const progress = Math.min(audio.currentTime / duration, 1);
-        const charsToShow = Math.floor(progress * text.length);
-        setDisplayedText(text.slice(0, charsToShow));
-      }, 60);
-    },
-    [stopTyping]
-  );
 
-  // Regular typewriter for welcome (no audio sync needed for welcome)
-  const startTyping = useCallback(
-    (text: string) => {
-      stopTyping();
-      let i = 0;
-      setDisplayedText("");
-      const tick = setInterval(() => {
-        if (i < text.length) {
-          i++;
-          setDisplayedText(text.slice(0, i));
-        } else {
-          clearInterval(tick);
+        if (duration && isFinite(duration) && duration > 0) {
+          const progress = Math.min(currentTime / duration, 1);
+
+          // Word-by-word reveal: smooth because we jump whole words
+          const wordCount = Math.round(progress * words.length);
+          setDisplayedText(words.slice(0, wordCount).join(" "));
+
+          // Smooth page scroll — instant at 60fps looks perfectly fluid
+          if (enableScroll) {
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            if (maxScroll > 0) {
+              window.scrollTo({ top: progress * maxScroll * 0.82, behavior: "instant" });
+            }
+          }
         }
-      }, 38);
-      typingRef.current = tick;
+
+        rafRef.current = requestAnimationFrame(tick);
+      };
+
+      rafRef.current = requestAnimationFrame(tick);
     },
-    [stopTyping]
+    [stopRAF]
   );
 
-  // Smooth page scroll synced with audio progress
-  const startAudioSyncedScroll = useCallback(
-    (audio: HTMLAudioElement) => {
-      stopScrolling();
-      // Scroll page from top to 80% of total scrollable height over audio duration
-      scrollRef.current = setInterval(() => {
-        const duration = audio.duration;
-        if (!duration || duration === 0 || !isFinite(duration)) return;
-        const progress = Math.min(audio.currentTime / duration, 1);
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        if (maxScroll > 0) {
-          window.scrollTo({ top: progress * maxScroll * 0.85, behavior: "smooth" });
-        }
-      }, 600);
-    },
-    [stopScrolling]
-  );
-
-  // Welcome phase — play welcome.mp3 and typewriter-type English text
+  // ─── WELCOME PHASE ───────────────────────────────────────────────────
   useEffect(() => {
     if (phase !== "welcome") return;
     welcomeShown = true;
 
+    setDisplayedText("");
+    setIsSpeaking(false);
+
     const audio = new Audio("/welcome.mp3");
     audioRef.current = audio;
-    audio.addEventListener("ended", () => setIsSpeaking(false));
 
-    const t = setTimeout(async () => {
-      try {
-        await audio.play();
+    const onEnded = () => {
+      setIsSpeaking(false);
+      stopRAF();
+      setDisplayedText(WELCOME_ENGLISH);
+    };
+    audio.addEventListener("ended", onEnded);
+
+    // Start as soon as browser allows — no artificial delay for welcome
+    audio
+      .play()
+      .then(() => {
         setIsSpeaking(true);
-        startTyping(WELCOME_ENGLISH);
-      } catch {
+        // Use a simple typewriter for welcome (no scroll sync needed)
+        const words = WELCOME_ENGLISH.split(" ");
+        let wordIndex = 0;
+        const typeWord = () => {
+          wordIndex++;
+          setDisplayedText(words.slice(0, wordIndex).join(" "));
+          if (wordIndex < words.length) {
+            // Spread words evenly; welcome audio ~15s → ~15000ms / wordCount ms each
+            rafRef.current = window.setTimeout(typeWord, 180) as unknown as number;
+          }
+        };
+        typeWord();
+      })
+      .catch(() => {
         setIsSpeaking(false);
-        startTyping(WELCOME_ENGLISH);
-      }
-    }, 500);
+        setDisplayedText(WELCOME_ENGLISH);
+      });
 
     return () => {
-      clearTimeout(t);
-      stopAudio();
-      stopTyping();
+      audio.removeEventListener("ended", onEnded);
+      stopAll();
     };
-  }, [phase, startTyping, stopTyping, stopAudio]);
+  }, [phase, stopRAF, stopAll]);
 
-  // Tour phase — navigate, play mp3, sync text + scroll, then advance
+  // ─── TOUR PHASE ──────────────────────────────────────────────────────
   useEffect(() => {
     if (phase !== "tour") return;
 
@@ -217,26 +219,18 @@ export function AIAssistant() {
       return;
     }
 
+    // Navigate and reset scroll immediately
     navigate(step.path);
     window.scrollTo({ top: 0, behavior: "instant" });
-
     setIsSpeaking(false);
     setDisplayedText("");
 
     const audio = new Audio(step.audio);
     audioRef.current = audio;
 
-    const onCanPlay = () => {
-      // Start synced typing and scrolling once we know the duration
-      startAudioSyncedTyping(audio, step.englishText);
-      startAudioSyncedScroll(audio);
-    };
-
     const onEnded = () => {
       setIsSpeaking(false);
-      stopTyping();
-      stopScrolling();
-      // Show full text at end
+      stopRAF();
       setDisplayedText(step.englishText);
       setTimeout(() => {
         setTourStep((prev) => {
@@ -247,55 +241,46 @@ export function AIAssistant() {
           }
           return next;
         });
-      }, 1200);
+      }, 1000);
     };
 
-    audio.addEventListener("canplay", onCanPlay);
     audio.addEventListener("ended", onEnded);
 
-    const t = setTimeout(async () => {
-      try {
-        await audio.play();
+    // Play immediately — no delay, so text and audio are in sync from frame 0
+    audio
+      .play()
+      .then(() => {
         setIsSpeaking(true);
-      } catch {
+        startSyncLoop(audio, step.englishText, true);
+      })
+      .catch(() => {
+        // Autoplay blocked — still show text
         setIsSpeaking(false);
-        // Fallback: just type text if audio fails
-        startTyping(step.englishText);
-      }
-    }, 700);
+        setDisplayedText(step.englishText);
+      });
 
     return () => {
-      clearTimeout(t);
-      audio.removeEventListener("canplay", onCanPlay);
       audio.removeEventListener("ended", onEnded);
-      stopAudio();
-      stopTyping();
-      stopScrolling();
+      stopAll();
     };
-  }, [phase, tourStep, navigate, startAudioSyncedTyping, startAudioSyncedScroll, startTyping, stopTyping, stopScrolling, stopAudio]);
+  }, [phase, tourStep, navigate, startSyncLoop, stopAll, stopRAF]);
 
+  // ─── ACTIONS ─────────────────────────────────────────────────────────
   const startTour = () => {
-    stopAudio();
-    stopTyping();
-    stopScrolling();
+    stopAll();
     setIsSpeaking(false);
     setTourStep(0);
     setPhase("tour");
   };
 
-  // Minimizes robot to draggable bottom-right bubble
   const dismiss = () => {
-    stopAudio();
-    stopTyping();
-    stopScrolling();
+    stopAll();
     setIsSpeaking(false);
     setPhase("minimized");
   };
 
   const skipStep = () => {
-    stopAudio();
-    stopTyping();
-    stopScrolling();
+    stopAll();
     setIsSpeaking(false);
     const next = tourStep + 1;
     if (next >= TOUR_STEPS.length) {
@@ -305,24 +290,20 @@ export function AIAssistant() {
     }
   };
 
-  // Fully hides robot (only used on minimized close button)
   const handleClose = () => {
-    stopAudio();
-    stopTyping();
-    stopScrolling();
+    stopAll();
     setPhase("hidden");
   };
 
   if (phase === "hidden") return null;
 
   const currentStep = TOUR_STEPS[tourStep];
-  const activeText = phase === "tour" && currentStep ? currentStep.englishText : WELCOME_ENGLISH;
+  const activeFullText =
+    phase === "tour" && currentStep ? currentStep.englishText : WELCOME_ENGLISH;
 
   return (
     <>
-      {/* ══════════════════════════════════════════════
-          WELCOME MODAL
-      ══════════════════════════════════════════════ */}
+      {/* ══════ WELCOME MODAL ══════════════════════════════════════════ */}
       <AnimatePresence>
         {phase === "welcome" && (
           <motion.div
@@ -341,17 +322,15 @@ export function AIAssistant() {
               transition={{ type: "spring", stiffness: 280, damping: 24 }}
               className="flex flex-col items-center max-w-xs w-full"
             >
-              {/* Robot — clean, no rings */}
+              {/* Clean robot — no rings */}
               <div style={{ zIndex: 10, marginBottom: -30 }}>
                 <RobotImage isSpeaking={isSpeaking} size={178} />
               </div>
 
-              {/* White card */}
               <div
                 className="bg-white w-full rounded-3xl pt-10 pb-6 px-5"
                 style={{ boxShadow: "0 32px 100px rgba(0,0,0,0.45)" }}
               >
-                {/* Wave bars */}
                 {isSpeaking && (
                   <div className="flex items-end justify-center gap-[3px] mb-4" style={{ height: 16 }}>
                     {[0.5, 0.9, 0.65, 1, 0.6, 0.85, 0.55].map((h, i) => (
@@ -370,7 +349,6 @@ export function AIAssistant() {
                   </div>
                 )}
 
-                {/* English text box */}
                 <div
                   className="rounded-2xl p-4 text-sm text-slate-700 leading-relaxed"
                   style={{ minHeight: 82, background: "#f8fafc", border: "1px solid #e2e8f0" }}
@@ -379,13 +357,12 @@ export function AIAssistant() {
                   {displayedText.length < WELCOME_ENGLISH.length && (
                     <motion.span
                       animate={{ opacity: [1, 0, 1] }}
-                      transition={{ duration: 0.55, repeat: Infinity }}
+                      transition={{ duration: 0.6, repeat: Infinity }}
                       className="inline-block w-[2px] h-[13px] bg-violet-500 ml-[2px] align-middle"
                     />
                   )}
                 </div>
 
-                {/* Buttons */}
                 <div className="flex gap-3 mt-4">
                   <Button
                     onClick={startTour}
@@ -408,9 +385,7 @@ export function AIAssistant() {
         )}
       </AnimatePresence>
 
-      {/* ══════════════════════════════════════════════
-          TOUR MODE — fixed bottom-right
-      ══════════════════════════════════════════════ */}
+      {/* ══════ TOUR MODE — fixed bottom-right ════════════════════════ */}
       <AnimatePresence>
         {phase === "tour" && currentStep && (
           <motion.div
@@ -422,12 +397,11 @@ export function AIAssistant() {
             className="fixed z-[110] flex flex-col items-end"
             style={{ bottom: "1.5rem", right: "1.5rem", maxWidth: 270 }}
           >
-            {/* Text bubble above robot */}
+            {/* Text bubble */}
             <div
               className="mb-3 bg-white rounded-2xl p-3 shadow-2xl w-full"
               style={{ border: "1px solid #e2e8f0" }}
             >
-              {/* Step header */}
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-violet-600 uppercase tracking-wide">
                   {currentStep.label}
@@ -437,7 +411,6 @@ export function AIAssistant() {
                 </span>
               </div>
 
-              {/* Wave bars */}
               {isSpeaking && (
                 <div className="flex items-end gap-[2px] mb-2" style={{ height: 14 }}>
                   {[0.5, 0.9, 0.65, 1, 0.6, 0.85, 0.55].map((h, i) => (
@@ -456,20 +429,20 @@ export function AIAssistant() {
                 </div>
               )}
 
-              {/* English narration text — synced with audio */}
+              {/* Text synced with audio — word-by-word, smooth */}
               <p className="text-sm text-slate-700 leading-relaxed">
                 {displayedText}
-                {displayedText.length < activeText.length && (
+                {displayedText.length < activeFullText.length && (
                   <motion.span
                     animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 0.55, repeat: Infinity }}
+                    transition={{ duration: 0.6, repeat: Infinity }}
                     className="inline-block w-[2px] h-[13px] bg-violet-500 ml-[2px] align-middle"
                   />
                 )}
               </p>
             </div>
 
-            {/* Robot + action buttons */}
+            {/* Robot + controls */}
             <div className="flex items-end gap-2">
               <div className="flex flex-col gap-1.5 mb-1">
                 <button
@@ -478,7 +451,7 @@ export function AIAssistant() {
                 >
                   Skip <ChevronRight className="w-3 h-3" />
                 </button>
-                {/* End → minimizes robot to draggable bubble (same as No Thanks) */}
+                {/* End → minimized bubble, not hidden */}
                 <button
                   onClick={dismiss}
                   className="text-xs bg-red-50 hover:bg-red-100 text-red-500 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition-colors shadow-sm"
@@ -492,9 +465,7 @@ export function AIAssistant() {
         )}
       </AnimatePresence>
 
-      {/* ══════════════════════════════════════════════
-          MINIMIZED ROBOT — draggable, bottom-right
-      ══════════════════════════════════════════════ */}
+      {/* ══════ MINIMIZED ROBOT — draggable bubble ════════════════════ */}
       <AnimatePresence>
         {phase === "minimized" && (
           <motion.div
@@ -518,7 +489,6 @@ export function AIAssistant() {
             </motion.div>
 
             <div className="relative">
-              {/* Only this X truly hides the robot */}
               <button
                 onClick={handleClose}
                 onPointerDown={(e) => e.stopPropagation()}

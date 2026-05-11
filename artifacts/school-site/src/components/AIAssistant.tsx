@@ -100,10 +100,21 @@ export function AIAssistant() {
   const [tourStep, setTourStep] = useState(0);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const typingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const typingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const scrollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const stopTyping = useCallback(() => {
-    if (typingRef.current) clearTimeout(typingRef.current);
+    if (typingRef.current) {
+      clearInterval(typingRef.current);
+      typingRef.current = null;
+    }
+  }, []);
+
+  const stopScrolling = useCallback(() => {
+    if (scrollRef.current) {
+      clearInterval(scrollRef.current);
+      scrollRef.current = null;
+    }
   }, []);
 
   const stopAudio = useCallback(() => {
@@ -114,24 +125,62 @@ export function AIAssistant() {
     }
   }, []);
 
+  // Typewriter that runs in sync with audio: reveals text proportionally to audio progress
+  const startAudioSyncedTyping = useCallback(
+    (audio: HTMLAudioElement, text: string) => {
+      stopTyping();
+      setDisplayedText("");
+
+      // Poll audio.currentTime every ~60ms and reveal text proportionally
+      typingRef.current = setInterval(() => {
+        const duration = audio.duration;
+        if (!duration || duration === 0 || !isFinite(duration)) return;
+        const progress = Math.min(audio.currentTime / duration, 1);
+        const charsToShow = Math.floor(progress * text.length);
+        setDisplayedText(text.slice(0, charsToShow));
+      }, 60);
+    },
+    [stopTyping]
+  );
+
+  // Regular typewriter for welcome (no audio sync needed for welcome)
   const startTyping = useCallback(
     (text: string) => {
       stopTyping();
       let i = 0;
       setDisplayedText("");
-      const typeNext = () => {
+      const tick = setInterval(() => {
         if (i < text.length) {
-          setDisplayedText(text.slice(0, i + 1));
           i++;
-          typingRef.current = setTimeout(typeNext, 30);
+          setDisplayedText(text.slice(0, i));
+        } else {
+          clearInterval(tick);
         }
-      };
-      typingRef.current = setTimeout(typeNext, 500);
+      }, 38);
+      typingRef.current = tick;
     },
     [stopTyping]
   );
 
-  // Welcome phase — play welcome.mp3 and type English text
+  // Smooth page scroll synced with audio progress
+  const startAudioSyncedScroll = useCallback(
+    (audio: HTMLAudioElement) => {
+      stopScrolling();
+      // Scroll page from top to 80% of total scrollable height over audio duration
+      scrollRef.current = setInterval(() => {
+        const duration = audio.duration;
+        if (!duration || duration === 0 || !isFinite(duration)) return;
+        const progress = Math.min(audio.currentTime / duration, 1);
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScroll > 0) {
+          window.scrollTo({ top: progress * maxScroll * 0.85, behavior: "smooth" });
+        }
+      }, 600);
+    },
+    [stopScrolling]
+  );
+
+  // Welcome phase — play welcome.mp3 and typewriter-type English text
   useEffect(() => {
     if (phase !== "welcome") return;
     welcomeShown = true;
@@ -144,12 +193,12 @@ export function AIAssistant() {
       try {
         await audio.play();
         setIsSpeaking(true);
+        startTyping(WELCOME_ENGLISH);
       } catch {
         setIsSpeaking(false);
+        startTyping(WELCOME_ENGLISH);
       }
     }, 500);
-
-    startTyping(WELCOME_ENGLISH);
 
     return () => {
       clearTimeout(t);
@@ -158,7 +207,7 @@ export function AIAssistant() {
     };
   }, [phase, startTyping, stopTyping, stopAudio]);
 
-  // Tour phase — navigate, play mp3, type English text, then advance
+  // Tour phase — navigate, play mp3, sync text + scroll, then advance
   useEffect(() => {
     if (phase !== "tour") return;
 
@@ -169,6 +218,7 @@ export function AIAssistant() {
     }
 
     navigate(step.path);
+    window.scrollTo({ top: 0, behavior: "instant" });
 
     setIsSpeaking(false);
     setDisplayedText("");
@@ -176,8 +226,18 @@ export function AIAssistant() {
     const audio = new Audio(step.audio);
     audioRef.current = audio;
 
+    const onCanPlay = () => {
+      // Start synced typing and scrolling once we know the duration
+      startAudioSyncedTyping(audio, step.englishText);
+      startAudioSyncedScroll(audio);
+    };
+
     const onEnded = () => {
       setIsSpeaking(false);
+      stopTyping();
+      stopScrolling();
+      // Show full text at end
+      setDisplayedText(step.englishText);
       setTimeout(() => {
         setTourStep((prev) => {
           const next = prev + 1;
@@ -190,6 +250,7 @@ export function AIAssistant() {
       }, 1200);
     };
 
+    audio.addEventListener("canplay", onCanPlay);
     audio.addEventListener("ended", onEnded);
 
     const t = setTimeout(async () => {
@@ -198,30 +259,35 @@ export function AIAssistant() {
         setIsSpeaking(true);
       } catch {
         setIsSpeaking(false);
+        // Fallback: just type text if audio fails
+        startTyping(step.englishText);
       }
     }, 700);
 
-    startTyping(step.englishText);
-
     return () => {
       clearTimeout(t);
+      audio.removeEventListener("canplay", onCanPlay);
       audio.removeEventListener("ended", onEnded);
       stopAudio();
       stopTyping();
+      stopScrolling();
     };
-  }, [phase, tourStep, navigate, startTyping, stopTyping, stopAudio]);
+  }, [phase, tourStep, navigate, startAudioSyncedTyping, startAudioSyncedScroll, startTyping, stopTyping, stopScrolling, stopAudio]);
 
   const startTour = () => {
     stopAudio();
     stopTyping();
+    stopScrolling();
     setIsSpeaking(false);
     setTourStep(0);
     setPhase("tour");
   };
 
+  // Minimizes robot to draggable bottom-right bubble
   const dismiss = () => {
     stopAudio();
     stopTyping();
+    stopScrolling();
     setIsSpeaking(false);
     setPhase("minimized");
   };
@@ -229,6 +295,7 @@ export function AIAssistant() {
   const skipStep = () => {
     stopAudio();
     stopTyping();
+    stopScrolling();
     setIsSpeaking(false);
     const next = tourStep + 1;
     if (next >= TOUR_STEPS.length) {
@@ -238,9 +305,11 @@ export function AIAssistant() {
     }
   };
 
+  // Fully hides robot (only used on minimized close button)
   const handleClose = () => {
     stopAudio();
     stopTyping();
+    stopScrolling();
     setPhase("hidden");
   };
 
@@ -387,7 +456,7 @@ export function AIAssistant() {
                 </div>
               )}
 
-              {/* English narration text */}
+              {/* English narration text — synced with audio */}
               <p className="text-sm text-slate-700 leading-relaxed">
                 {displayedText}
                 {displayedText.length < activeText.length && (
@@ -409,8 +478,9 @@ export function AIAssistant() {
                 >
                   Skip <ChevronRight className="w-3 h-3" />
                 </button>
+                {/* End → minimizes robot to draggable bubble (same as No Thanks) */}
                 <button
-                  onClick={handleClose}
+                  onClick={dismiss}
                   className="text-xs bg-red-50 hover:bg-red-100 text-red-500 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition-colors shadow-sm"
                 >
                   End <X className="w-3 h-3" />
@@ -448,6 +518,7 @@ export function AIAssistant() {
             </motion.div>
 
             <div className="relative">
+              {/* Only this X truly hides the robot */}
               <button
                 onClick={handleClose}
                 onPointerDown={(e) => e.stopPropagation()}

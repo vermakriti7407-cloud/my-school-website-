@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
 import { X, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
@@ -101,6 +101,16 @@ export function AIAssistant() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const rafRef = useRef<number | null>(null);
+
+  // Motion values for draggable robot — used for gravity snap-back
+  const robotX = useMotionValue(0);
+  const robotY = useMotionValue(0);
+
+  const handleRobotDragEnd = useCallback(() => {
+    // Animate back to default position with a gravity-like falling spring
+    animate(robotX, 0, { type: "spring", stiffness: 260, damping: 18, mass: 1.2 });
+    animate(robotY, 0, { type: "spring", stiffness: 260, damping: 18, mass: 1.2 });
+  }, [robotX, robotY]);
 
   // Cancel the running RAF loop
   const stopRAF = useCallback(() => {
@@ -449,13 +459,14 @@ export function AIAssistant() {
             key="mini-robot"
             drag
             dragMomentum={false}
+            style={{ x: robotX, y: robotY, bottom: "1rem", right: "1.5rem", touchAction: "none" }}
+            onDragEnd={handleRobotDragEnd}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 240, damping: 22 }}
             onDoubleClick={restartWelcome}
             className="fixed z-[110] flex flex-col items-center cursor-grab active:cursor-grabbing select-none"
-            style={{ bottom: "1rem", right: "1.5rem", touchAction: "none" }}
           >
             {/* "Drag me" pill — pointer-events:none so drag fires on outer div */}
             <motion.div

@@ -299,6 +299,15 @@ export function AIAssistant() {
     setPhase("hidden");
   };
 
+  const restartWelcome = () => {
+    stopAll();
+    setIsSpeaking(false);
+    setTourStep(0);
+    setDisplayedText("");
+    welcomeShown = false;
+    setPhase("welcome");
+  };
+
   if (phase === "hidden") return null;
 
   const currentStep = TOUR_STEPS[tourStep];
@@ -444,27 +453,37 @@ export function AIAssistant() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 240, damping: 22 }}
+            onDoubleClick={restartWelcome}
             className="fixed z-[110] flex flex-col items-center cursor-grab active:cursor-grabbing select-none"
-            style={{ bottom: "6rem", right: "2rem", touchAction: "none" }}
+            style={{ bottom: "1rem", right: "1.5rem", touchAction: "none" }}
           >
+            {/* "Drag me" pill — pointer-events:none so drag fires on outer div */}
             <motion.div
               animate={{ y: [0, -5, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-              className="mb-1 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg"
-              style={{ background: "linear-gradient(135deg,#6d28d9,#4f46e5)" }}
+              className="text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg"
+              style={{
+                background: "linear-gradient(135deg,#6d28d9,#4f46e5)",
+                pointerEvents: "none",
+                marginBottom: "-6px",
+              }}
             >
               ✨ Drag me
             </motion.div>
 
             <div className="relative">
+              {/* Close button — kept interactive, stops drag propagation */}
               <button
                 onClick={handleClose}
                 onPointerDown={(e) => e.stopPropagation()}
-                className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center z-10 shadow-md transition-colors"
+                className="absolute top-3 right-3 w-5 h-5 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center z-10 shadow-md transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>
-              <RobotImage isSpeaking={false} size={178} />
+              {/* Robot image — pointer-events:none lets drag/dblclick reach outer div */}
+              <div style={{ pointerEvents: "none" }}>
+                <RobotImage isSpeaking={false} size={178} />
+              </div>
             </div>
           </motion.div>
         )}

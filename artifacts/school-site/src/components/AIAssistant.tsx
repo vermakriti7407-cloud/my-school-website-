@@ -129,6 +129,9 @@ export function AIAssistant() {
    *  - Smoothly scrolls the page in sync with audio.currentTime
    * Returns a cleanup function.
    */
+  // Constant scroll speed in pixels per second — same feel on every page
+  const SCROLL_PPS = 85;
+
   const startSyncLoop = useCallback(
     (audio: HTMLAudioElement, text: string, enableScroll: boolean) => {
       stopRAF();
@@ -141,15 +144,16 @@ export function AIAssistant() {
         if (duration && isFinite(duration) && duration > 0) {
           const progress = Math.min(currentTime / duration, 1);
 
-          // Word-by-word reveal: smooth because we jump whole words
+          // Word-by-word reveal in sync with audio
           const wordCount = Math.round(progress * words.length);
           setDisplayedText(words.slice(0, wordCount).join(" "));
 
-          // Smooth page scroll — instant at 60fps looks perfectly fluid
+          // Fixed-speed scroll: same px/s regardless of page height
           if (enableScroll) {
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             if (maxScroll > 0) {
-              window.scrollTo({ top: progress * maxScroll * 0.82, behavior: "instant" });
+              const targetScroll = Math.min(currentTime * SCROLL_PPS, maxScroll * 0.9);
+              window.scrollTo({ top: targetScroll, behavior: "instant" });
             }
           }
         }
@@ -331,24 +335,6 @@ export function AIAssistant() {
                 className="bg-white w-full rounded-3xl pt-10 pb-6 px-5"
                 style={{ boxShadow: "0 32px 100px rgba(0,0,0,0.45)" }}
               >
-                {isSpeaking && (
-                  <div className="flex items-end justify-center gap-[3px] mb-4" style={{ height: 16 }}>
-                    {[0.5, 0.9, 0.65, 1, 0.6, 0.85, 0.55].map((h, i) => (
-                      <motion.span
-                        key={i}
-                        className="w-[3px] rounded-full"
-                        style={{
-                          height: 14,
-                          background: "linear-gradient(to top, #7c3aed, #a78bfa)",
-                          transformOrigin: "bottom",
-                        }}
-                        animate={{ scaleY: [h, 1, h * 0.3, 1, h] }}
-                        transition={{ duration: 0.62, repeat: Infinity, delay: i * 0.07, ease: "easeInOut" }}
-                      />
-                    ))}
-                  </div>
-                )}
-
                 <div
                   className="rounded-2xl p-4 text-sm text-slate-700 leading-relaxed"
                   style={{ minHeight: 82, background: "#f8fafc", border: "1px solid #e2e8f0" }}
@@ -411,24 +397,6 @@ export function AIAssistant() {
                 </span>
               </div>
 
-              {isSpeaking && (
-                <div className="flex items-end gap-[2px] mb-2" style={{ height: 14 }}>
-                  {[0.5, 0.9, 0.65, 1, 0.6, 0.85, 0.55].map((h, i) => (
-                    <motion.span
-                      key={i}
-                      className="w-[3px] rounded-full"
-                      style={{
-                        height: 12,
-                        background: "linear-gradient(to top, #7c3aed, #a78bfa)",
-                        transformOrigin: "bottom",
-                      }}
-                      animate={{ scaleY: [h, 1, h * 0.3, 1, h] }}
-                      transition={{ duration: 0.62, repeat: Infinity, delay: i * 0.07, ease: "easeInOut" }}
-                    />
-                  ))}
-                </div>
-              )}
-
               {/* Text synced with audio — word-by-word, smooth */}
               <p className="text-sm text-slate-700 leading-relaxed">
                 {displayedText}
@@ -443,23 +411,23 @@ export function AIAssistant() {
             </div>
 
             {/* Robot + controls */}
-            <div className="flex items-end gap-2">
-              <div className="flex flex-col gap-1.5 mb-1">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex gap-2 w-full">
                 <button
                   onClick={skipStep}
-                  className="text-xs bg-violet-100 hover:bg-violet-200 text-violet-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition-colors shadow-sm"
+                  className="flex-1 text-xs bg-violet-100 hover:bg-violet-200 text-violet-700 px-3 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-1 transition-colors shadow-sm"
                 >
                   Skip <ChevronRight className="w-3 h-3" />
                 </button>
                 {/* End → minimized bubble, not hidden */}
                 <button
                   onClick={dismiss}
-                  className="text-xs bg-red-50 hover:bg-red-100 text-red-500 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition-colors shadow-sm"
+                  className="flex-1 text-xs bg-red-50 hover:bg-red-100 text-red-500 px-3 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-1 transition-colors shadow-sm"
                 >
                   End <X className="w-3 h-3" />
                 </button>
               </div>
-              <RobotImage isSpeaking={isSpeaking} size={90} />
+              <RobotImage isSpeaking={isSpeaking} size={178} />
             </div>
           </motion.div>
         )}
@@ -496,7 +464,7 @@ export function AIAssistant() {
               >
                 <X className="w-3 h-3" />
               </button>
-              <RobotImage isSpeaking={false} size={64} />
+              <RobotImage isSpeaking={false} size={178} />
             </div>
           </motion.div>
         )}

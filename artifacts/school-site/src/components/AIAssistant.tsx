@@ -107,9 +107,21 @@ export function AIAssistant() {
   const robotY = useMotionValue(0);
 
   const handleRobotDragEnd = useCallback(() => {
-    // Animate back to default position with a gravity-like falling spring
-    animate(robotX, 0, { type: "spring", stiffness: 260, damping: 18, mass: 1.2 });
-    animate(robotY, 0, { type: "spring", stiffness: 260, damping: 18, mass: 1.2 });
+    // Phase 1: Fall straight down to ground level (y = 0), gravity-like
+    animate(robotY, 0, {
+      type: "spring",
+      stiffness: 380,
+      damping: 22,
+      mass: 1.6,
+    }).then(() => {
+      // Phase 2: Slide smoothly right to home corner (x = 0)
+      animate(robotX, 0, {
+        type: "spring",
+        stiffness: 180,
+        damping: 28,
+        mass: 1,
+      });
+    });
   }, [robotX, robotY]);
 
   // Cancel the running RAF loop

@@ -22,49 +22,49 @@ const TOUR_STEPS = [
     audio: "/menus/about us.mp3",
     label: "About Us",
     englishText:
-      "About Us: For over 109 years, Anglo Sanskrit School has been a pillar of education in Pundri. Founded with a vision to blend traditional values with modern learning, we stand as a symbol of academic excellence, integrity, and community pride in the region.",
+      "109 years of excellence — founded 1916 in Pundri, Kaithal, Haryana. A proud symbol of education blending traditional values with modern learning.",
   },
   {
     path: "/academics",
     audio: "/menus/academic.mp3",
     label: "Academics",
     englishText:
-      "Academics: We follow the Board of School Education Haryana curriculum, offering Science, Commerce, and Arts streams at the senior level. Our dedicated faculty uses innovative teaching methods to help every student reach their full potential.",
+      "BSEH curriculum — Science, Commerce & Arts. Classes 1 to 12, Hindi & English medium. Dedicated faculty with innovative teaching methods.",
   },
   {
     path: "/admissions",
     audio: "/menus/admission.mp3",
     label: "Admissions",
     englishText:
-      "Admissions: We are open for Session 2026-27! Enroll your child in Classes 1 to 12 through our transparent, merit-based admission process. Apply before May 31st. Visit our office or contact us for more details and to secure your seat.",
+      "Admissions open for 2026–27! Classes 1 to 12. Merit-based process. Apply before May 31st — visit our office or call for details.",
   },
   {
     path: "/faculty",
     audio: "/menus/faculty.mp3",
     label: "Faculty",
     englishText:
-      "Faculty: Our highly qualified and experienced teachers are the heart of our school. With decades of combined expertise, they provide personalized attention and dedicated mentorship to help every student grow academically and personally.",
+      "Qualified, experienced teachers — the heart of our school. Personalized attention and dedicated mentorship for every student.",
   },
   {
     path: "/facilities",
     audio: "/menus/facilites.mp3",
     label: "Facilities",
     englishText:
-      "Facilities: Our campus is equipped with modern science labs, a well-stocked library, computer labs, a spacious sports ground, and smart classrooms — everything needed to provide a world-class and inspiring learning environment.",
+      "Science labs, library, computer labs, sports ground & smart classrooms — a complete world-class learning campus.",
   },
   {
     path: "/gallery",
     audio: "/menus/gallery.mp3",
     label: "Gallery",
     englishText:
-      "Gallery: Explore our vibrant school life through photos and memories. From Annual Sports Day and cultural festivals to science exhibitions and board exam achievements — every image reflects the spirit and energy of our school community.",
+      "Sports Day, cultural festivals, science exhibitions & board achievements — vibrant school life captured in photos.",
   },
   {
     path: "/contact",
     audio: "/menus/contact us.mp3",
     label: "Contact",
     englishText:
-      "Contact Us: We are located in Pundri, Kaithal, Haryana - 136026. Reach out for admission queries, school events, or any information. Our friendly team is always happy to assist you. Visit us or get in touch by phone or email.",
+      "Pundri, Kaithal, Haryana — 136026. Visit us or contact by phone/email for admissions, events, or any information.",
   },
 ];
 
@@ -149,13 +149,14 @@ export function AIAssistant() {
    * Starts a 60fps RAF loop that:
    *  - Reveals text word-by-word in sync with audio.currentTime
    *  - Smoothly scrolls the page in sync with audio.currentTime
-   * Returns a cleanup function.
+   * scrollMode:
+   *   "fixed"        — constant 85px/s (used for Home)
+   *   "proportional" — scroll reaches page bottom exactly when audio ends (used for all other sections)
    */
-  // Constant scroll speed in pixels per second — same feel on every page
   const SCROLL_PPS = 85;
 
   const startSyncLoop = useCallback(
-    (audio: HTMLAudioElement, text: string, enableScroll: boolean) => {
+    (audio: HTMLAudioElement, text: string, enableScroll: boolean, scrollMode: "fixed" | "proportional" = "fixed") => {
       stopRAF();
       const words = text.split(" ");
 
@@ -170,11 +171,17 @@ export function AIAssistant() {
           const wordCount = Math.round(progress * words.length);
           setDisplayedText(words.slice(0, wordCount).join(" "));
 
-          // Fixed-speed scroll: same px/s regardless of page height
           if (enableScroll) {
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             if (maxScroll > 0) {
-              const targetScroll = Math.min(currentTime * SCROLL_PPS, maxScroll * 0.9);
+              let targetScroll: number;
+              if (scrollMode === "proportional") {
+                // Scroll reaches full page bottom exactly when audio ends
+                targetScroll = progress * maxScroll;
+              } else {
+                // Fixed speed — same px/s regardless of page height (Home)
+                targetScroll = Math.min(currentTime * SCROLL_PPS, maxScroll * 0.9);
+              }
               window.scrollTo({ top: targetScroll, behavior: "instant" });
             }
           }
@@ -273,11 +280,13 @@ export function AIAssistant() {
     audio.addEventListener("ended", onEnded);
 
     // Play immediately — no delay, so text and audio are in sync from frame 0
+    // Home (step 0) uses fixed-speed scroll; all other sections use proportional
+    const scrollMode = tourStep === 0 ? "fixed" : "proportional";
     audio
       .play()
       .then(() => {
         setIsSpeaking(true);
-        startSyncLoop(audio, step.englishText, true);
+        startSyncLoop(audio, step.englishText, true, scrollMode);
       })
       .catch(() => {
         // Autoplay blocked — still show text

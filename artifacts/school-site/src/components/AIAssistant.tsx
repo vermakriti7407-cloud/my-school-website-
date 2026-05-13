@@ -16,55 +16,84 @@ const TOUR_STEPS = [
     label: "Home",
     englishText:
       "Welcome to Anglo Sanskrit Senior Secondary School, Pundri! Established in 1916, we have been nurturing young minds for over a century. Our school offers co-educational, holistic learning in Hindi and English medium from Class 1 to Class 12, in Pundri, Kaithal, Haryana.",
+    segments: null as null,
   },
   {
     path: "/about",
     audio: "/menus/about us.mp3",
     label: "About Us",
-    englishText:
-      "109 years of excellence — founded 1916 in Pundri, Kaithal, Haryana. A proud symbol of education blending traditional values with modern learning.",
+    englishText: null as null,
+    segments: [
+      "Founded in 1916 — over 109 years of excellence in Pundri",
+      "Blending traditional values with modern education",
+      "A proud symbol of integrity and community pride in Kaithal, Haryana",
+    ],
   },
   {
     path: "/academics",
     audio: "/menus/academic.mp3",
     label: "Academics",
-    englishText:
-      "BSEH curriculum — Science, Commerce & Arts. Classes 1 to 12, Hindi & English medium. Dedicated faculty with innovative teaching methods.",
+    englishText: null as null,
+    segments: [
+      "BSEH curriculum — Science, Commerce & Arts streams",
+      "Classes 1 to 12 in Hindi & English medium",
+      "Innovative teaching by dedicated, experienced faculty",
+    ],
   },
   {
     path: "/admissions",
     audio: "/menus/admission.mp3",
     label: "Admissions",
-    englishText:
-      "Admissions open for 2026–27! Classes 1 to 12. Merit-based process. Apply before May 31st — visit our office or call for details.",
+    englishText: null as null,
+    segments: [
+      "Admissions open for Session 2026–27!",
+      "Classes 1 to 12 — merit-based, transparent process",
+      "Apply before May 31st — visit our office for details",
+    ],
   },
   {
     path: "/faculty",
     audio: "/menus/faculty.mp3",
     label: "Faculty",
-    englishText:
-      "Qualified, experienced teachers — the heart of our school. Personalized attention and dedicated mentorship for every student.",
+    englishText: null as null,
+    segments: [
+      "Highly qualified & experienced teaching staff",
+      "Decades of combined expertise across all subjects",
+      "Personalized attention & dedicated mentorship for every student",
+    ],
   },
   {
     path: "/facilities",
     audio: "/menus/facilites.mp3",
     label: "Facilities",
-    englishText:
-      "Science labs, library, computer labs, sports ground & smart classrooms — a complete world-class learning campus.",
+    englishText: null as null,
+    segments: [
+      "Modern science labs & a well-stocked library",
+      "Computer labs & a spacious sports ground",
+      "Smart classrooms for a world-class learning experience",
+    ],
   },
   {
     path: "/gallery",
     audio: "/menus/gallery.mp3",
     label: "Gallery",
-    englishText:
-      "Sports Day, cultural festivals, science exhibitions & board achievements — vibrant school life captured in photos.",
+    englishText: null as null,
+    segments: [
+      "Annual Sports Day & vibrant cultural festivals",
+      "Science exhibitions & inter-school competitions",
+      "Board exam toppers & school achievement milestones",
+    ],
   },
   {
     path: "/contact",
     audio: "/menus/contact us.mp3",
     label: "Contact",
-    englishText:
-      "Pundri, Kaithal, Haryana — 136026. Visit us or contact by phone/email for admissions, events, or any information.",
+    englishText: null as null,
+    segments: [
+      "Located in Pundri, Kaithal, Haryana — 136026",
+      "Call or email us for admissions & event queries",
+      "Our friendly team is always ready to assist you",
+    ],
   },
 ];
 
@@ -156,7 +185,13 @@ export function AIAssistant() {
   const SCROLL_PPS = 85;
 
   const startSyncLoop = useCallback(
-    (audio: HTMLAudioElement, text: string, enableScroll: boolean, scrollMode: "fixed" | "proportional" = "fixed") => {
+    (
+      audio: HTMLAudioElement,
+      text: string,
+      enableScroll: boolean,
+      scrollMode: "fixed" | "proportional" = "fixed",
+      segments: string[] | null = null
+    ) => {
       stopRAF();
       const words = text.split(" ");
 
@@ -167,21 +202,20 @@ export function AIAssistant() {
         if (duration && isFinite(duration) && duration > 0) {
           const progress = Math.min(currentTime / duration, 1);
 
-          // Word-by-word reveal in sync with audio
-          const wordCount = Math.round(progress * words.length);
-          setDisplayedText(words.slice(0, wordCount).join(" "));
+          if (segments && segments.length > 0) {
+            // Segment mode: show one key line per equally-divided slice of audio
+            const idx = Math.min(Math.floor(progress * segments.length), segments.length - 1);
+            setDisplayedText(segments[idx]);
+          } else {
+            // Word-by-word reveal in sync with audio (Home)
+            const wordCount = Math.round(progress * words.length);
+            setDisplayedText(words.slice(0, wordCount).join(" "));
+          }
 
           if (enableScroll) {
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             if (maxScroll > 0) {
-              let targetScroll: number;
-              if (scrollMode === "proportional") {
-                // Scroll reaches full page bottom exactly when audio ends
-                targetScroll = progress * maxScroll;
-              } else {
-                // Fixed speed — same px/s regardless of page height (Home)
-                targetScroll = Math.min(currentTime * SCROLL_PPS, maxScroll * 0.9);
-              }
+              const targetScroll = Math.min(currentTime * SCROLL_PPS, maxScroll * 0.9);
               window.scrollTo({ top: targetScroll, behavior: "instant" });
             }
           }
@@ -261,10 +295,14 @@ export function AIAssistant() {
     const audio = new Audio(step.audio);
     audioRef.current = audio;
 
+    const finalText = step.segments
+      ? step.segments[step.segments.length - 1]
+      : (step.englishText ?? "");
+
     const onEnded = () => {
       setIsSpeaking(false);
       stopRAF();
-      setDisplayedText(step.englishText);
+      setDisplayedText(finalText);
       setTimeout(() => {
         setTourStep((prev) => {
           const next = prev + 1;
@@ -285,12 +323,12 @@ export function AIAssistant() {
       .play()
       .then(() => {
         setIsSpeaking(true);
-        startSyncLoop(audio, step.englishText, true, "fixed");
+        startSyncLoop(audio, step.englishText ?? "", true, "fixed", step.segments ?? null);
       })
       .catch(() => {
         // Autoplay blocked — still show text
         setIsSpeaking(false);
-        setDisplayedText(step.englishText);
+        setDisplayedText(finalText);
       });
 
     return () => {
@@ -341,8 +379,12 @@ export function AIAssistant() {
   if (phase === "hidden") return null;
 
   const currentStep = TOUR_STEPS[tourStep];
+  // In segment mode (steps 1-7) there's no "incomplete" text — cursor is suppressed
+  const isSegmentMode = phase === "tour" && currentStep && Array.isArray(currentStep.segments);
   const activeFullText =
-    phase === "tour" && currentStep ? currentStep.englishText : WELCOME_ENGLISH;
+    phase === "tour" && currentStep && !isSegmentMode
+      ? (currentStep.englishText ?? "")
+      : WELCOME_ENGLISH;
 
   return (
     <>
@@ -436,10 +478,10 @@ export function AIAssistant() {
                 </span>
               </div>
 
-              {/* Text synced with audio — word-by-word, smooth */}
+              {/* Text synced with audio — word-by-word (Home) or segment-by-segment (other pages) */}
               <p className="text-sm text-slate-700 leading-relaxed">
                 {displayedText}
-                {displayedText.length < activeFullText.length && (
+                {!isSegmentMode && displayedText.length < activeFullText.length && (
                   <motion.span
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 0.6, repeat: Infinity }}

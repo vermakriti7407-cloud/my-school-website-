@@ -421,13 +421,6 @@ export function AIAssistant() {
                   style={{ minHeight: 82, background: "#f8fafc", border: "1px solid #e2e8f0" }}
                 >
                   {displayedText}
-                  {displayedText.length < WELCOME_ENGLISH.length && (
-                    <motion.span
-                      animate={{ opacity: [1, 0, 1] }}
-                      transition={{ duration: 0.6, repeat: Infinity }}
-                      className="inline-block w-[2px] h-[13px] bg-violet-500 ml-[2px] align-middle"
-                    />
-                  )}
                 </div>
 
                 <div className="flex gap-3 mt-4">
@@ -481,13 +474,6 @@ export function AIAssistant() {
               {/* Text synced with audio — word-by-word (Home) or segment-by-segment (other pages) */}
               <p className="text-sm text-slate-700 leading-relaxed">
                 {displayedText}
-                {!isSegmentMode && displayedText.length < activeFullText.length && (
-                  <motion.span
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 0.6, repeat: Infinity }}
-                    className="inline-block w-[2px] h-[13px] bg-violet-500 ml-[2px] align-middle"
-                  />
-                )}
               </p>
             </div>
 

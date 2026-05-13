@@ -280,13 +280,12 @@ export function AIAssistant() {
     audio.addEventListener("ended", onEnded);
 
     // Play immediately — no delay, so text and audio are in sync from frame 0
-    // Home (step 0) uses fixed-speed scroll; all other sections use proportional
-    const scrollMode = tourStep === 0 ? "fixed" : "proportional";
+    // All sections use the same fixed scroll speed (same as Home)
     audio
       .play()
       .then(() => {
         setIsSpeaking(true);
-        startSyncLoop(audio, step.englishText, true, scrollMode);
+        startSyncLoop(audio, step.englishText, true, "fixed");
       })
       .catch(() => {
         // Autoplay blocked — still show text

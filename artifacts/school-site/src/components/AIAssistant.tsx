@@ -436,14 +436,15 @@ export function AIAssistant() {
                   <Button
                     onClick={startTour}
                     className="flex-1 h-11 rounded-xl font-semibold shadow-lg text-white"
-                    style={{ background: "linear-gradient(135deg, #6d28d9, #4f46e5)" }}
+                    style={{ background: "#001f5b" }}
                   >
                     🚀 Start Tour
                   </Button>
                   <Button
                     onClick={dismiss}
                     variant="outline"
-                    className="flex-1 h-11 rounded-xl border-slate-200 text-slate-500 hover:bg-slate-50 font-medium"
+                    className="flex-1 h-11 rounded-xl font-semibold"
+                    style={{ borderColor: "#001f5b", color: "#001f5b", background: "white" }}
                   >
                     No Thanks
                   </Button>
@@ -472,7 +473,7 @@ export function AIAssistant() {
               style={{ border: "1px solid #e2e8f0" }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-violet-600 uppercase tracking-wide">
+                <span className="text-xs font-bold uppercase tracking-wide" style={{ color: "#001f5b" }}>
                   {currentStep.label}
                 </span>
                 <span className="text-xs text-slate-400 font-medium">
@@ -491,9 +492,10 @@ export function AIAssistant() {
               <div className="flex gap-2 w-full">
                 <button
                   onClick={skipStep}
-                  className="flex-1 text-xs bg-violet-100 hover:bg-violet-200 text-violet-700 px-3 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-1 transition-colors shadow-sm"
+                  className="flex-1 text-xs px-3 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-1 transition-colors shadow-sm"
+                  style={{ background: "#ffffff", color: "#001f5b", border: "1.5px solid #001f5b" }}
                 >
-                  Skip <ChevronRight className="w-3 h-3" />
+                  Skip <ChevronRight className="w-3 h-3" style={{ color: "#001f5b" }} />
                 </button>
                 {/* End → minimized bubble, not hidden */}
                 <button

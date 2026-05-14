@@ -218,7 +218,7 @@ export function Chatbot() {
         whileTap={{ scale: 0.94 }}
         onClick={() => setIsOpen((o) => !o)}
         className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl"
-        style={{ background: "linear-gradient(135deg,#6d28d9,#4f46e5)" }}
+        style={{ background: "#ffffff", border: "1.5px solid #e2e8f0" }}
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -229,7 +229,7 @@ export function Chatbot() {
               exit={{ rotate: 90, opacity: 0 }}
               transition={{ duration: 0.18 }}
             >
-              <X className="w-6 h-6 text-white" />
+              <X className="w-6 h-6" style={{ color: "#001f5b" }} />
             </motion.div>
           ) : (
             <motion.div
@@ -239,7 +239,7 @@ export function Chatbot() {
               exit={{ rotate: -90, opacity: 0 }}
               transition={{ duration: 0.18 }}
             >
-              <MessageCircle className="w-6 h-6 text-white" />
+              <MessageCircle className="w-6 h-6" style={{ color: "#001f5b" }} />
             </motion.div>
           )}
         </AnimatePresence>

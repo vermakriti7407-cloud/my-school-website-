@@ -194,6 +194,9 @@ export function AIAssistant() {
     ) => {
       stopRAF();
       const words = text.split(" ");
+      // Track previous values so we only call setState when something actually changes
+      let lastWordCount = -1;
+      let lastSegIdx = -1;
 
       const tick = () => {
         const currentTime = audio.currentTime;
@@ -205,11 +208,17 @@ export function AIAssistant() {
           if (segments && segments.length > 0) {
             // Segment mode: show one key line per equally-divided slice of audio
             const idx = Math.min(Math.floor(progress * segments.length), segments.length - 1);
-            setDisplayedText(segments[idx]);
+            if (idx !== lastSegIdx) {
+              lastSegIdx = idx;
+              setDisplayedText(segments[idx]);
+            }
           } else {
-            // Word-by-word reveal in sync with audio (Home)
+            // Word-by-word reveal in sync with audio (Home) — only update when word count changes
             const wordCount = Math.round(progress * words.length);
-            setDisplayedText(words.slice(0, wordCount).join(" "));
+            if (wordCount !== lastWordCount) {
+              lastWordCount = wordCount;
+              setDisplayedText(words.slice(0, wordCount).join(" "));
+            }
           }
 
           if (enableScroll) {
@@ -520,9 +529,11 @@ export function AIAssistant() {
             <motion.div
               animate={{ y: [0, -5, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-              className="text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg"
+              className="text-[11px] font-bold px-3 py-1 rounded-full shadow-lg"
               style={{
-                background: "linear-gradient(135deg,#6d28d9,#4f46e5)",
+                background: "#ffffff",
+                color: "#001f5b",
+                border: "1.5px solid #e2e8f0",
                 pointerEvents: "none",
                 marginBottom: "-6px",
               }}

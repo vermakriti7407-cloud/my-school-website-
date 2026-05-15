@@ -139,7 +139,6 @@ export function AIAssistant() {
   const didDragRef = useRef(false);
 
   const handleRobotDragEnd = useCallback(() => {
-    didDragRef.current = true;
     // Phase 1: Fall straight down to ground level (y = 0), gravity-like
     animate(robotY, 0, {
       type: "spring",
@@ -542,6 +541,7 @@ export function AIAssistant() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 240, damping: 22 }}
             onPointerDown={() => { didDragRef.current = false; }}
+            onDrag={() => { didDragRef.current = true; }}
             onClick={() => { if (!didDragRef.current) restartWelcome(); }}
             className="fixed z-[110] flex flex-col items-center cursor-grab active:cursor-grabbing select-none"
           >

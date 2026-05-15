@@ -1,3 +1,5 @@
+import { config } from "dotenv";
+config();
 import app from "./app";
 import { logger } from "./lib/logger";
 

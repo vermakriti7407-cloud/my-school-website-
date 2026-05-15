@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
-import { X, ChevronRight } from "lucide-react";
+import { X, ChevronRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
+import { Chatbot } from "@/components/Chatbot";
 
 let welcomeShown = false;
 
@@ -127,6 +128,7 @@ export function AIAssistant() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [displayedText, setDisplayedText] = useState("");
   const [tourStep, setTourStep] = useState(0);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -134,8 +136,10 @@ export function AIAssistant() {
   // Motion values for draggable robot — used for gravity snap-back
   const robotX = useMotionValue(0);
   const robotY = useMotionValue(0);
+  const didDragRef = useRef(false);
 
   const handleRobotDragEnd = useCallback(() => {
+    didDragRef.current = true;
     // Phase 1: Fall straight down to ground level (y = 0), gravity-like
     animate(robotY, 0, {
       type: "spring",
@@ -449,6 +453,16 @@ export function AIAssistant() {
                     No Thanks
                   </Button>
                 </div>
+
+                <Button
+                  onClick={() => { dismiss(); setIsChatOpen(true); }}
+                  variant="outline"
+                  className="w-full h-10 rounded-xl font-semibold mt-2 flex items-center justify-center gap-2"
+                  style={{ borderColor: "#001f5b", color: "#001f5b", background: "white" }}
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Chat with AI Assistant
+                </Button>
               </div>
             </motion.div>
           </motion.div>
@@ -511,6 +525,9 @@ export function AIAssistant() {
         )}
       </AnimatePresence>
 
+      {/* ══════ CHATBOT PANEL ══════════════════════════════════════════ */}
+      <Chatbot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+
       {/* ══════ MINIMIZED ROBOT — draggable bubble ════════════════════ */}
       <AnimatePresence>
         {phase === "minimized" && (
@@ -524,7 +541,8 @@ export function AIAssistant() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 240, damping: 22 }}
-            onDoubleClick={restartWelcome}
+            onPointerDown={() => { didDragRef.current = false; }}
+            onClick={() => { if (!didDragRef.current) restartWelcome(); }}
             className="fixed z-[110] flex flex-col items-center cursor-grab active:cursor-grabbing select-none"
           >
             {/* "Drag me" pill — pointer-events:none so drag fires on outer div */}
